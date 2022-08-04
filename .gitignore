@@ -2,4 +2,4 @@ target/
 .idea/
 .bsp/
 .vscode/
-.DS
+.DS_Store
