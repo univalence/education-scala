@@ -17,6 +17,8 @@
 
 package io.univalence.education.internal
 
+import jdk.jshell.spi.ExecutionControl.NotImplementedException
+
 import scala.quoted.*
 import scala.reflect.ClassTag
 import scala.reflect.ClassTag.Nothing
@@ -27,19 +29,21 @@ object exercise_tools {
   final private[internal] case class CheckContext(expression: String, fileContext: FileContext)
 
   private[internal] enum CheckResultType {
-    case SUCCESS, FAILURE, ERROR
+    case SUCCESS, FAILURE, ERROR, TODO
   }
 
   private[internal] enum CheckResult {
     case Success(context: CheckContext)
     case Failure(context: CheckContext)
     case Error(context: CheckContext, exception: Throwable)
+    case Todo(context: CheckContext)
 
     def expression: String =
       this match {
         case Success(context)  => context.expression
         case Failure(context)  => context.expression
         case Error(context, _) => context.expression
+        case Todo(context)     => context.expression
       }
 
     def getType: CheckResultType =
@@ -47,6 +51,8 @@ object exercise_tools {
         case Success(_)  => CheckResultType.SUCCESS
         case Failure(_)  => CheckResultType.FAILURE
         case Error(_, _) => CheckResultType.ERROR
+        case Todo(_)     => CheckResultType.TODO
+
       }
   }
 
@@ -109,7 +115,7 @@ object exercise_tools {
    * @param content
    *   code of the exercise
    */
-  inline def exercise(title: String, activated: Boolean)(content: => Unit): Unit =
+  inline def exercise(title: String, inline activated: Boolean = true)(content: => Unit): Unit =
     inline if (activated) {
       activatedContexts = activatedContexts :+ PartContext(title)
       part(activatedContexts.map(_.title).mkString(" > "))
@@ -119,13 +125,15 @@ object exercise_tools {
         case PartException(l, c) =>
           throw PartException(s"$title > $l", c)
         case e: Exception =>
-          throw new PartException(title, e)
+          throw PartException(title, e)
+        case _: NotImplementedError =>
+          println(("\t" * activatedContexts.size) + s">>> ${Console.MAGENTA}TODO${Console.RESET}")
       } finally activatedContexts = activatedContexts.init
     } else {
       part((activatedContexts.map(_.title) :+ s"$title ${Console.RED}(TO ACTIVATE)").mkString(" > "))
     }
 
-  inline def section(label: String)(f: => Unit): Unit = exercise(label, true)(f)
+  inline def section(label: String)(f: => Unit): Unit = exercise(label)(f)
 
   final case class PartException(label: String, cause: Throwable)
       extends RuntimeException(s"""Exception caught in part "$label"""", cause)
@@ -145,23 +153,29 @@ object exercise_tools {
 
   private def evaluate(expression: => Boolean, checkContext: CheckContext): CheckResult =
     scala.util.Try(expression) match {
-      case scala.util.Success(true)      => CheckResult.Success(checkContext)
-      case scala.util.Success(false)     => CheckResult.Failure(checkContext)
-      case scala.util.Failure(exception) => CheckResult.Error(checkContext, exception)
+      case scala.util.Success(true)  => CheckResult.Success(checkContext)
+      case scala.util.Success(false) => CheckResult.Failure(checkContext)
+      case scala.util.Failure(exception) =>
+        exception match {
+          case _: NotImplementedError => CheckResult.Todo(checkContext)
+          case _                      => CheckResult.Error(checkContext, exception)
+        }
     }
 
   private def displayCheckResult(result: CheckResult): Unit = {
     val resultDisplay =
       result match {
         case CheckResult.Success(context) =>
-          s"${Console.GREEN}OK (line:${context.fileContext.line})${Console.RESET}"
+          s"${Console.GREEN}${result.expression} OK (line:${context.fileContext.line})${Console.RESET}"
         case CheckResult.Failure(context) =>
-          s"${Console.YELLOW}FAILED (${context.fileContext.path}:${context.fileContext.line})${Console.RESET}"
+          s"${Console.YELLOW}${result.expression} FAILED (${context.fileContext.path}:${context.fileContext.line})${Console.RESET}"
+        case CheckResult.Todo(context) =>
+          s"${Console.CYAN}TODO${Console.RESET}"
         case CheckResult.Error(context, e) =>
-          s"${Console.RED}ERROR (${context.fileContext.path}:${context.fileContext.line}: ${e.getClass.getCanonicalName}: ${e.getMessage})${Console.RESET}"
+          s"${Console.RED}${result.expression} ERROR (${context.fileContext.path}:${context.fileContext.line}: ${e.getClass.getCanonicalName}: ${e.getMessage})${Console.RESET}"
       }
 
-    println(("\t" * activatedContexts.size) + s">>> ${result.expression} $resultDisplay")
+    println(("\t" * activatedContexts.size) + s">>> $resultDisplay")
   }
 
 }
