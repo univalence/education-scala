@@ -9,8 +9,10 @@ import scala.util.Random
 import java.time.LocalDate
 
 /**
+ * =Standard library=
+ *
  * Scala comes with a standard library that implements commonly used
- * codes.
+ * helpers.
  *
  * One of the most important part of the standard library are their
  * immutable data structures. We can find them in the package
@@ -69,7 +71,7 @@ def standard_library(): Unit =
     }
 
     /**
-     * The map function is one of the most used one, it allows us to
+     * The `map` unction is one of the most used one, it allows us to
      * easily update all elements of a list applying the same function
      * to all of them.
      */
@@ -144,7 +146,7 @@ def standard_library(): Unit =
     /**
      * This one is trickier. However it is important to manipulate
      * options without having to handle the null value when it is not
-     * necessary.
+     * necessary. The function `flatMap` allows you to do that.
      */
     exercise("Chain two options") {
       val maybeUsername: Option[String] = Some("student@school.com")
