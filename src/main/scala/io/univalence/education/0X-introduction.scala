@@ -264,7 +264,11 @@ def _00_introduction(): Unit = {
 
       /**
        * Chances are that you'll need some libraries at some point.
-       * Let's install one among the best of them all
+       * Let's install one among the best of them all: ZIO
+       *
+       * todo find out how to install ZIO 2.0.0
+       *
+       * (hint: have a look at build.sbt)
        */
 
       val zioTest: UIO[Unit] = ZIO.unit
