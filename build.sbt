@@ -8,6 +8,7 @@ lazy val root =
       name := "education-scala",
       scalacOptions ++= Seq("-Xcheck-macros"),
       libraryDependencies ++= Seq(
-        "org.scalameta" %% "munit" % "0.7.29" % Test
+        "org.scalameta" %% "munit" % "0.7.29" % Test,
+        "dev.zio"       %% "zio"   % "2.0.0"
       )
     )

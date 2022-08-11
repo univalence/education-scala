@@ -1,5 +1,7 @@
 package io.univalence.education
 
+import zio._
+
 import io.univalence.education.internal.exercise_tools.*
 import io.univalence.education.internal.implicits.*
 
@@ -235,7 +237,7 @@ def _00_introduction(): Unit = {
     exercise("Either") {
 
       /**
-       * Once again here is a data structure that represents some kind
+       * Once again, here is a data structure that represents some kind
        * of duality. Either[L,R] can be of type:
        *   - Left(l) where the value is of type L
        *   - Right(r) where r is of type R
@@ -246,6 +248,8 @@ def _00_introduction(): Unit = {
       type RedPill  = String
       type BluePill = Int
 
+      // remember, i'm offering you the truth, nothing more
+
       def morpheus(choice: Boolean): Either[BluePill, RedPill] = if (choice) Right("truth") else Left(1010110100)
       check(morpheus(true) == Right("truth"))
     }
@@ -253,33 +257,18 @@ def _00_introduction(): Unit = {
     exercise("For comprehesion", activated = true) {
       check(?? == ??)
     }
-
-  }
-
-  section("PART 7 - Collection transformations") {
-    exercise("map") {}
-
-    exercise("flatmap") {}
-
-    exercise("filter") {}
-
-    exercise("collect") {}
-
-    exercise("sortBy") {}
-
-    exercise("zipWithIndex") {}
-
-    exercise("foreach") {}
-
-    exercise("mkString") {}
-
-    exercise("fold") {}
-
   }
 
   section("PART 8  - SBT") {
     exercise("add sbt dep", activated = true) {
-      check(?? == ??)
+
+      /**
+       * Chances are that you'll need some libraries at some point.
+       * Let's install one among the best of them all
+       */
+
+      val zioTest: UIO[Unit] = ZIO.unit
+      check(zioTest.isInstanceOf[UIO[Unit]])
     }
   }
 
