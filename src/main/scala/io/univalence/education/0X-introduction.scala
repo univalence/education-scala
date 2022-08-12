@@ -1,11 +1,12 @@
 package io.univalence.education
 
-import zio._
+import zio.*
 
 import io.univalence.education.internal.exercise_tools.*
 import io.univalence.education.internal.implicits.*
 
 import scala.::
+import scala.collection.SortedSet
 import scala.util.{Failure, Success, Try}
 
 @main
@@ -35,9 +36,16 @@ def _00_introduction(): Unit = {
     }
 
     exercise("Lazy val", activated = true) {
-      lazy val uselessHeavyStuff = (1 to 1_000_000).filter(_ % 42 == 0).sum
-      val a                      = 42
-      check(a == 42)
+      var x = 0
+      lazy val effect = {
+        x += 1
+        42
+      }
+      check(x == ??)
+      check(effect == 42)
+      check(x == ??)
+      check(effect == 42)
+      check(x == ??)
     }
 
     /**
@@ -46,10 +54,10 @@ def _00_introduction(): Unit = {
      */
 
     exercise("String interpolation", activated = true) {
-      val c   = "n"
-      val n   = "c"
-      val str = s"le cuisinier se${c}oue les ${n}ouilles"
-      check(str == "le cuisinier secoue les nouilles")
+      val gl  = "p"
+      val p   = "gl"
+      val str = s"{$gl}isser dans la ${p}iscine"
+      check(str == "glisser dans la piscine")
     }
   }
 
@@ -91,7 +99,7 @@ def _00_introduction(): Unit = {
        */
 
       val l1 = List(1, 2, 3, 4, 5, 6)
-      check(l1 == List(1) :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
+      check(l1 == 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
     }
 
     exercise("Mutate list", activated = true) {
@@ -100,21 +108,27 @@ def _00_introduction(): Unit = {
 
       val l1 = List(42)
       val l2 = l1 :+ 43
+      check(l1 == List(42))
       check(l2 == List(42, 43))
     }
 
     exercise("other useful collections", activated = true) {
 
       /** Seq should be used as a general purpose collection */
-      val seq = Seq(42, 43)
+      val seqWithDuplicates: Seq[Int] = Seq(2, 3, 1, 2, 3, 1)
 
       /** Set should be used when */
-      val set = Set(1, 1, 2, 2, 3, 3)
+      // todo : transform seqWithDuplicates into a Set
+      val set: Set[Int] = seqWithDuplicates.toSet
 
       /** Map are associative arrays */
-      val map = Map(1 -> "one", 2 -> "two", 3 -> "three", 4 -> "viva l'algérie")
+      val l                     = List("one", "two", "three")
+      val sortedSet             = SortedSet.from(set)
+      val map: Map[String, Int] = l.zip(sortedSet).toMap
 
-      check(seq == ??)
+      check(seqWithDuplicates.size > set.size)
+      check(sortedSet == Set(1, 2, 3))
+      check(map == Map("one" -> 1, "two" -> 2, "three" -> 3))
     }
 
     exercise("common collection operations", activated = true) {
@@ -133,25 +147,39 @@ def _00_introduction(): Unit = {
   section("PART 3 - Functions") {
 
     exercise("function without arguments", activated = true) {
-      def sophism: Unit = println("the rooster crows, the sun rises therefore the sun is risen by the rooster")
-      // todo:  run the function above
+      var x = 0
+      def effect = {
+        x += 1
+        42
+      }
+      // todo: run the effect above in order to make the test pass
+      check(x == 1)
+      check(effect == 42)
     }
+
+    /**
+     * There are several ways to write the same function in Scala
+     *
+     * Here are a few examples
+     */
+
+    def plusOne(n: Int)       = n + 1
+    val addOne                = (n: Int) => n + 1
+    val increment: Int => Int = n => n + 1
+    val increase: Int => Int  = _ + 1
+
+    /**
+     * you don't even have to type some anonymous function when provided
+     * sufficient amount of contextual info
+     *
+     * for instance:
+     */
+
+    val incrementList = (list: List[Int]) => list.map(elt => elt + 1)
 
     exercise("function with arg", activated = true) {
-      val greeting = (name: String) => s"Hello there, $name"
-      check(?? == "Hello there, general Kenobi")
-    }
-
-    exercise("anonymous function", activated = true) {
-
-      /**
-       * The function notation above "() => ???" is called anonymous
-       * function. This concept is useful when passing a function as an
-       * argument
-       */
-
-      val a = List(1, 2, 3, 4, 5, 6).map((elt: Int) => elt + 1)
-      check(a == List(2, 3, 4, 5, 6, 7))
+      val greeting: String => String = ???
+      check(greeting("general Kenobi") == "Hello there, general Kenobi")
     }
 
     exercise("passing a function as argument", activated = true) {
@@ -163,10 +191,20 @@ def _00_introduction(): Unit = {
 
   section("PART 4  - Control flow") {
 
+    /** Scala if statements can be passed as a value. */
+
+    val x: Int            = 42
+    val condition: String = if (x == 42) "forty two" else "some other number"
+    check(condition == "forty two")
+
     exercise("If else as a an expression", activated = true) {
-      val x: Int             = 42
-      val condition: Boolean = if (x == 42) true else false
-      check(condition)
+      val x: Int = 42
+
+      // todo : use an if statement inside a string interpolation
+      // reminder: string interpolation -> s"hello ${someVal}"
+
+      val condition: String = s"x is an ${if (x % 2 == 0) "even" else "odd"} number"
+      check(condition == "x is an even number")
     }
   }
 
@@ -185,14 +223,54 @@ def _00_introduction(): Unit = {
      */
 
     exercise("create a case class and an instance", activated = true) {
+
       case class Pokemon(name: String, id: Int)
       val bulbasaur = Pokemon("Bulbasaur", 1)
-      // todo create a ditto that looks like a bulbasaur
-      val ditto = Pokemon("Bulbasaur", 1)
 
-      check(bulbasaur.id == 1)
-      check(ditto == bulbasaur) // equality by value
+      /** todo: create a new Pokemon named ditto with an id of 132 */
+      val ditto = Pokemon("Ditto", 132)
+
+      /**
+       * Ditto is a pokemon with a special attack called `Transform`
+       * giving it the ability to change into an enemy
+       *
+       * Let's use transform on bulbasaur
+       */
+
+      val transformedDitto = ditto.copy(name = "Bulbasaur")
+
+      // todo : Let's finish the transformation by giving ditto bulbasaur's id
+
+      val fullyTransformedDitto = ???
+
+      // the following test should pass as case classes are compared by value
+      check(fullyTransformedDitto == bulbasaur)
+
+      check(fullyTransformedDitto.toString == "Pokemon(Bulbasaur,1)")
+
     }
+
+    exercise("create your own cae class", activated = true) {
+
+      /**
+       * todo : create a case class Student, its attributes will be:
+       *   - name of type String
+       *   - grades of type Seq[Int]
+       *   - isHardWorking of type Boolean with a default value of
+       *     `true`
+       */
+
+      ???
+
+      // todo: create an instance of Student in a way that passes the test
+
+      ???
+
+      // val student = Student("jack", List(1,2,3))
+      // check(student.isInstanceOf[Student])
+      // check(student.isHardWorking == true)
+    }
+
   }
 
   section("PART 6 - Functional data structures") {
@@ -255,7 +333,21 @@ def _00_introduction(): Unit = {
     }
 
     exercise("For comprehesion", activated = true) {
-      check(?? == ??)
+
+      /**
+       * a "for comprehension" is a way to sequentially transform values
+       * (called closures)
+       */
+
+      val option1 = Some(42)
+      val option2 = Some(8)
+
+      val sumOption =
+        for {
+          fortyTwo <- option1
+          eight    <- option2
+        } yield fortyTwo + eight
+
     }
   }
 
@@ -266,13 +358,27 @@ def _00_introduction(): Unit = {
        * Chances are that you'll need some libraries at some point.
        * Let's install one among the best of them all: ZIO
        *
-       * todo find out how to install ZIO 2.0.0
+       * First go and read this doc: https://zio.dev/getting_started
        *
-       * (hint: have a look at build.sbt)
+       * You'll find `build.sbt` at the root of this project
+       *
+       * Reload the project by clicking on the reload button that should
+       * appear at the top right corner of your screen
+       *
+       * At the top of this file, import zio like so: `import zio._`
+       *
+       * Then uncomment the following lines and see if the test passes
        */
 
-      val zioTest: UIO[Unit] = ZIO.unit
-      check(zioTest.isInstanceOf[UIO[Unit]])
+      // val zioTest: UIO[Unit] = ZIO.unit
+      // check(zioTest.isInstanceOf[UIO[Unit]])
+    }
+  }
+
+  section("PART 9  - Pattern matching") {
+    exercise("???", activated = true) {
+      ??
+
     }
   }
 
