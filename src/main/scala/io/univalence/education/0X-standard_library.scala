@@ -4,9 +4,12 @@ import io.univalence.education.internal.exercise_tools.*
 import io.univalence.education.internal.implicits.*
 
 import scala.annotation.tailrec
-import scala.util.Random
+import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.util.{Random, Try}
 
 import java.time.LocalDate
+import java.util.concurrent.TimeUnit
 
 /**
  * =Standard library=
@@ -169,6 +172,20 @@ def standard_library(): Unit =
     }
 
     /**
+     * There is a general function that allows us to "unwrap" an Option
+     * called "fold". It is a function that needs two parameters:
+     *   - A function if the Option contains a value
+     *   - A default value
+     */
+    exercise("Recover from a none value using a default value of 10 using fold") {
+      val none: Option[Int] = None
+      val some: Option[Int] = Some(10)
+
+      check(none.getOrElse(10) == none.fold(10)(identity))
+      check(some.getOrElse(10) == some.fold(10)(identity))
+    }
+
+    /**
      * You can also pattern match and handle the error differently thant
      * the value case.
      */
@@ -247,7 +264,62 @@ def standard_library(): Unit =
   }
 
   /**
-   * You maybe noticed that the three data structures has many
+   * Futures is another famous typeclass. As the name suggest, it
+   * describes a value that may arrive in the future. It is useful when
+   * you communicate with an API that may send a value later on.
+   */
+  section("Practicing with Future[A]") {
+
+    /**
+     * Future needs an execution context to works describing how and on
+     * which thread pool the Future code will execute. Here, we provide
+     * it implicitly meaning that we don't need to provide it anytime we
+     * use a Future.
+     */
+    implicit val ec: ExecutionContextExecutor = ExecutionContext.global
+
+    // TODO: Since you will have to wait for this test, you should only activate it when you are doing it.
+    exercise("Create a Future with a non immediate value.", activated = false) {
+      val future: Future[Int] =
+        Future {
+          Thread.sleep(2000L)
+          200
+        }
+
+      check(!future.isCompleted)
+
+      // We need to await for the result here, use Await.result:
+      val value = Await.result(future, Duration(5, TimeUnit.SECONDS))
+      check(value == 200)
+    }
+
+    exercise("Create a Future with an immediate value of 200") {
+      val future: Future[Int] = Future(200)
+
+      check(future.isCompleted)
+      check(future.value.contains(Try(200)))
+    }
+
+    exercise("Change a Future that may not arrived yet adding 100 to 200.") {
+      // Add the answers of the previous exercise here
+      val future: Future[Int]            = Future(200)
+      val transformedFuture: Future[Int] = future.map(_ + 100)
+
+      check(transformedFuture.value.contains(Try(300)))
+    }
+
+    exercise("Chain two futures summing two arriving values") {
+      val future1: Future[Int] = Future(200)
+      val future2: Future[Int] = Future(100)
+
+      val futureSum = future1.flatMap(value1 => future2.map(value2 => value1 + value2))
+
+      check(Await.result(futureSum, Duration.Inf) == 300)
+    }
+  }
+
+  /**
+   * You maybe noticed that the four data structures has many
    * similarities. The Scala library is built with this constraint in
    * mind.
    *
@@ -262,8 +334,16 @@ def standard_library(): Unit =
    *
    * We already used these three functions, we will see them in details
    * here.
+   *
+   * What it is important here is that using Monads, we don't think
+   * about the implementation behind the Monad. We don't need to know if
+   * an optional value is present or not or if a future value is arrived
+   * or not. All we have to do is to provide the function to apply in
+   * case of success.
    */
   section("Similarities and monads") {
+    implicit val ec: ExecutionContextExecutor = ExecutionContext.global
+
     exercise("Train to use the `pure` function wrapping 10 in List, Option and Either") {
       // Let's take a value of any type
       val value: Int = 10
@@ -281,9 +361,13 @@ def standard_library(): Unit =
       // For either, wrapping a value means that the value may be not available thus return an error of type E
       val eitherContainingTheValue: Either[Nothing, Int] = Right(10)
 
+      // For future, wrapping a value means that the value may arrive asynchronously
+      val futureContainingTheValue: Future[Int] = Future(10)
+
       check(listContainingTheValue.contains(10))
       check(optionContainingTheValue.contains(10))
       check(eitherContainingTheValue.contains(10))
+      check(futureContainingTheValue.value.contains(Try(10)))
     }
 
     /**
@@ -312,6 +396,7 @@ def standard_library(): Unit =
       val listContainingTheValue: List[Int]              = List(10)
       val optionContainingTheValue: Option[Int]          = Option(10)
       val eitherContainingTheValue: Either[Nothing, Int] = Right(10)
+      val futureContainingTheValue: Future[Int]          = Future(10)
 
       // Applying the function f to a List of Int will apply this function to every element of the List.
       val listContainingTheValueApplyingF: List[Int] = listContainingTheValue.map(f)
@@ -324,6 +409,10 @@ def standard_library(): Unit =
       // Applying the function f to an Either will apply the function to the value if it exists or will be ignored if it is an error.
       val eitherContainingTheValueApplyingF: Either[Nothing, Int] = eitherContainingTheValue.map(f)
       check(eitherContainingTheValueApplyingF.contains(20))
+
+      // Applying the function f to a Future will apply the function when the value arrive.
+      val futureContainingTheValueApplyingF: Future[Int] = futureContainingTheValue.map(f)
+      check(futureContainingTheValueApplyingF.value.contains(Try(20)))
     }
 
     exercise("Train to use the `flatMap` summing the content of two monad") {
@@ -331,11 +420,13 @@ def standard_library(): Unit =
       val listContainingTheValue: List[Int]              = List(10)
       val optionContainingTheValue: Option[Int]          = Option(10)
       val eitherContainingTheValue: Either[Nothing, Int] = Right(10)
+      val futureContainingTheValue: Future[Int]          = Future(10)
 
       // In our program, we will have multiple times an optional value, a list of value or a value that may produce an error
       val listContainingAnotherValue: List[Int]              = List(20)
       val optionContainingAnotherValue: Option[Int]          = Option(20)
       val eitherContainingAnotherValue: Either[Nothing, Int] = Right(20)
+      val futureContainingAnotherValue: Future[Int]          = Future(20)
 
       // Sum the content of the Lists
       val listSum: List[Int] =
@@ -357,6 +448,13 @@ def standard_library(): Unit =
           eitherContainingAnotherValue.map(anotherValue => theValue + anotherValue)
         )
       check(eitherSum == Right(30))
+
+      // Sum the content of the Future
+      val futureSum: Future[Int] =
+        futureContainingTheValue.flatMap(theValue =>
+          futureContainingAnotherValue.map(anotherValue => theValue + anotherValue)
+        )
+      check(Await.result(futureSum, Duration.Inf) == 30)
     }
 
     /**
@@ -417,5 +515,51 @@ def standard_library(): Unit =
         } yield theValue + anotherValue
 
       check(optionSum == optionSum2)
+    }
+
+    /**
+     * Monad is an abstraction that everybody can use. Let's try to
+     * implement the simplest Monad only wrapping a value and allowing
+     * us to manipulate it.
+     */
+    // TODO: @françois je crois que ce dernier ne marche pas à cause des macros
+    // exercise("Create you own Monad") {
+    //  case class Box[+A](a: A) {
+    //    def map[B](f: A => B): Box[B]          = Box(f(a))
+    //    def flatMap[B](f: A => Box[B]): Box[B] = f(a)
+    //  }
+//
+    //  val boxTheValue: Box[Int]     = Box(10)
+    //  val boxAnotherValue: Box[Int] = Box(20)
+//
+    //  val boxSum =
+    //    for {
+    //      theValue     <- boxTheValue
+    //      anotherValue <- boxAnotherValue
+    //    } yield theValue + anotherValue
+//
+    //  check(boxSum == Box(30))
+    // }
+
+    section("Type as documentation") {
+
+      /**
+       * Something very interesting with pure and strong typed program
+       * is the fact that a function signature by itself can tell you
+       * the purpose of the function. Generally in Scala, you don't need
+       * docstring to explain what is the nature of an argument or what
+       * it needs to work.
+       *
+       * It makes the standard library very accessible for developers.
+       */
+      exercise("Implement the function fold of an Option without checking the standard library") {
+        def fold[A](option: Option[A])(default: A)(f: A => A): A =
+          option match {
+            case Some(value) => f(value)
+            case None        => default
+          }
+
+        check(Some(10).fold(20)(_ + 20) == fold(Some(10))(20)(_ + 20))
+      }
     }
   }

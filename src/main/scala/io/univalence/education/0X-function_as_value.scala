@@ -1,4 +1,4 @@
-package io.univalence.education.internal
+package io.univalence.education
 
 import io.univalence.education.internal.exercise_tools.*
 
@@ -12,12 +12,12 @@ import java.time.LocalDate
  * Like many other functional programming language, you can define
  * function as value.
  *
- * Function as value main benefit is:
+ * Function as value main benefits are:
  *   - The possibility to give a function in parameter
  *   - The possibility to return a function
  *   - The possibility to compose functions
  *
- * We will see these three in this lab.
+ * We will see those three in this lab.
  */
 @main
 def function_as_value(): Unit =
@@ -91,8 +91,8 @@ def function_as_value(): Unit =
     exercise("Composing functions") {
 
       /**
-       * This is another way to write uppercase function using
-       * {{{_.func}}} instead of {{{string => string.func}}}.
+       * This is another way to write uppercase function using "_.func"
+       * instead of "string => string.func".
        */
       val uppercase: String => String = _.toUpperCase
       val chars: String => List[Char] = _.toList
