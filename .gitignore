@@ -3,3 +3,5 @@ target/
 .bsp/
 .vscode/
 .DS_Store
+
+repl.scala
