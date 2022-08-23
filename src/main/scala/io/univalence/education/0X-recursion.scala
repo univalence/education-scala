@@ -188,7 +188,7 @@ def recursion(): Unit = {
        */
 
       val fib = Iterator.iterate((0, 1))(t => (t._2, t._1 + t._2))
-      val l2  = fib.take(5).map(t => t._2).mkString("0, ", ", ", " etc.")
+      val l2  = fib.take(5).map(t => t._2).mkString("0, ", ", ", ", etc.")
 
       check(l2 == "0, 1, 1, 2, 3, 5 etc.")
     }
