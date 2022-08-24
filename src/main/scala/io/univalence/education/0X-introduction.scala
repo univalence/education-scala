@@ -1,37 +1,81 @@
 package io.univalence.education
 
-//import zio.*
-
 import io.univalence.education.internal.exercise_tools.*
 import io.univalence.education.internal.implicits.*
 
-import scala.::
 import scala.annotation.tailrec
 import scala.collection.SortedSet
 import scala.util.{Failure, Success, Try}
 
 @main
 def _00_introduction(): Unit = {
+
+  /**
+   * =Variables=
+   * Scala proposes 3 kinds of variable declaration. And there is one
+   * more that can be assimilated to a variable declaration.
+   *
+   * NOTE: now on, every time you see `??`, `???`, or a `TODO`, it is a
+   * placeholder for you to put your answer. Same if a test fails.
+   */
   section("PART 1 - Variables") {
 
-    exercise("Mutable variable") {
-
-      /** You can create mutable variables */
-      var a: Int = 42
-      a += 8
-
-      check(a == ??)
-
-    }
-
-    exercise("Immutable variable (aka val)", activated = true) {
-      // todo: swap the ??? expression with an appropriate value so that the test passes
+    /**
+     * ==Simple (immutable) variable declaration: `val`==
+     *
+     * The first kind of variable declaration is the one recommended in
+     * Scala. It declares an '''immutable''' variable (ie. you cannot
+     * modify the variable value, once it has been initialized).
+     *
+     * This declaration is close to the declaration of constant in other
+     * programming languages, or to `final` variables in Java.
+     *
+     * '''Immutability''' helps you to reason more easily about your
+     * program, as it comes with no side effect, and therefore with less
+     * surprises.
+     *
+     * So if you have to declare a variable think about using `val`
+     * first.
+     */
+    exercise("Immutable variable (aka val)") {
       val a: Int = 42
-      val b: Int = 8
+
+      /**
+       * You can use the '''type inference''' mechanism. It is a
+       * mechanism where the compiler "guess" the type of your variables
+       * from the type of their assigned expression.
+       *
+       * In the line below, you let Scala "guess" the type of your
+       * variable according to the result of the expression. In the
+       * example below, Scala will guess that the variable `b` is of
+       * type `Int`.
+       */
+      val b = 8
+
       check(a + b == ??)
 
       // todo: create a value so that the test passes
       check(?? == "hello")
+    }
+
+    /**
+     * ==Mutable variable declaration: `var`==
+     *
+     * Scala allows the declaration of mutable variable, with the `var`
+     * keyword.
+     *
+     * BEWARE!!! Mutable variables used to be considered harmful by the
+     * Scala community and even by the functional programming community.
+     * Use it, if there is no other way or for optimization purpose
+     * (even there, do not forget D. Knuth's advice: "Premature
+     * optimization is the root of all evil."
+     */
+    exercise("Mutable variable (aka var)") {
+      var a: Int = 42
+      a = 3
+      a += 8
+
+      check(a == ??)
     }
 
     /**
@@ -41,39 +85,62 @@ def _00_introduction(): Unit = {
      * However it's considered good practice to state most types
      * explicitly (especially public functions)
      */
-    exercise("Type inference", activated = true) {
-      val a = ???
+    exercise("Type inference") {
+      val a = ??
+
       check(a.isInstanceOf[Int])
+
+      /**
+       * BEWARE!!!
+       *
+       * To let the type inference mechanism determine the type of your
+       * variable is a good thing, when you have to assign almost simple
+       * expressions. But with complex expressions, you take the risk to
+       * get confused when determining the exact type of a variable.
+       *
+       * In case of complex, it is better to explicitly annotate the
+       * type in the variable declaration. Also, the difference between
+       * simple and complex here depends on the team your are working
+       * in. It is obvious that `"hello"` or `1 + 1` are simples. But,
+       * how do you or how does your team categorize `Map("key1" ->
+       * 42)`?
+       */
     }
 
-    exercise("Lazy val", activated = true) {
+    /**
+     * ==lazy val==
+     *
+     * There is another kind of variable declaration: variable with a
+     * lazy initialization. In this case, the variable is initialized
+     * when its content is required, and not necessarily during the
+     * declaration.
+     */
+    exercise("Lazy val") {
       var x = 0
-      lazy val effect = {
-        x += 1
-        42
-      }
+
+      lazy val effect = { x += 1; 42 }
+
       check(x == ??)
-      check(effect == 42)
+      check(effect == ??)
       check(x == ??)
-      check(effect == 42)
+      check(effect == ??)
       check(x == ??)
     }
 
     /**
      * Scala comes with a String interpolation system, meaning that you
-     * can add variables inside a string.
+     * can reference variables inside a string.
      */
-
-    exercise("String interpolation", activated = true) {
-      val gl  = "p"
-      val p   = "gl"
-      val str = s"{$gl}isser dans la ${p}iscine"
-      check(str == "glisser dans la piscine")
+    exercise("String interpolation") {
+      val br  = "ch"
+      val ch   = "br"
+      val str = s"Le ${br}as sur la ${ch}aise"
+      check(str == ??)
     }
+
   }
 
   section("PART 2 - Collections") {
-
     /**
      * Scala collections all inherit from the Traversable trait
      * therefore giving you the ability to use common useful functions
@@ -726,7 +793,7 @@ def _00_introduction(): Unit = {
     val Zero = Expression.Constant(0.0)
     val One  = Expression.Constant(1.0)
 
-    import Expression._
+    import Expression.*
 
     exercisePart("Evaluate an expression")
     def eval(expression: Expression, variableValue: Double): Double =
