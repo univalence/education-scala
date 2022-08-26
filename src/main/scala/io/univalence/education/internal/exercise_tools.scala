@@ -17,8 +17,6 @@
 
 package io.univalence.education.internal
 
-import jdk.jshell.spi.ExecutionControl.NotImplementedException
-
 import scala.quoted.*
 import scala.reflect.ClassTag
 import scala.reflect.ClassTag.Nothing
@@ -61,6 +59,8 @@ object exercise_tools {
   private var activatedContexts: Seq[PartContext] = Seq.empty
 
   final inline def ?? : Any = Nothing
+  
+  type ???? = Nothing
 
   /** Check a boolean expression and display the result. */
   inline def check(inline expression: Boolean): Unit = ${ checkImpl('expression) }
