@@ -10,7 +10,7 @@ import io.univalence.education.internal.exercise_tools.*
  * In Scala 3, you can define a main function as follows.
  */
 @main
-def main(): Unit = println("Hello world")
+def _01_main(): Unit = println("Hello world")
 
 /**
  * NOTE
