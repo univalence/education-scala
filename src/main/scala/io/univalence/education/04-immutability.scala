@@ -177,26 +177,34 @@ def _04_immutability(): Unit =
      * Tips: The `immutableF` function's definition may be not correct.
      */
     exercise("Use immutable value to make a counter") {
-      Random.setSeed(1)
-
       var mutableCount = 0
 
       @tailrec
       def mutableF(): Unit = {
         mutableCount = mutableCount + 1
-        if (Random.nextBoolean()) mutableF() else ()
+
+        if (Random.nextBoolean())
+          mutableF()
+        else
+          ()
       }
 
-      mutableF()
+      @tailrec
+      def immutableF(count: Int): Int =
+        if (Random.nextBoolean())
+          immutableF(count + 1)
+        else
+          count + 1
 
       Random.setSeed(1)
+      mutableF()
 
-      @tailrec
-      def immutableF(count: Int): Int = if (Random.nextBoolean()) immutableF(count + 1) else count + 1
+      check(mutableCount == ??)
 
+      Random.setSeed(1)
       val immutableCount = immutableF(0)
 
-      check(mutableCount == immutableCount)
+      check(immutableCount == ??)
     }
 
     /**
@@ -259,7 +267,7 @@ def _04_immutability(): Unit =
           case Nil          => default
         }
 
+      check(list.foldLeft(0)(_ + _) == ??)
       check(immutableFoldLeft(list)(0)(_ + _) == ??)
-      check(list.foldLeft(0)(_ + _) == immutableFoldLeft(list)(0)(_ + _))
     }
   }

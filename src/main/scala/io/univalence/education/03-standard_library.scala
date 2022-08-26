@@ -306,7 +306,7 @@ def _03_standard_library(): Unit =
       val future: Future[Int] = promise.future
 
       // add a task to the future once it will be completed
-      future.foreach(value => check(value == 42))
+      future.foreach(value => check(value == ??))
 
       check(future.isCompleted == ??)
 
@@ -334,8 +334,8 @@ def _03_standard_library(): Unit =
     exercise("Create a Future with an immediate value of 200") {
       val future: Future[Int] = Future(200)
 
-      check(future.isCompleted)
-      check(future.value.contains(Try(200)))
+      check(future.isCompleted == ??)
+      check(future.value.contains(??))
     }
 
     exercise("Change a Future that may not arrived yet adding 100 to 200.") {
@@ -343,7 +343,7 @@ def _03_standard_library(): Unit =
       val future: Future[Int]            = Future(200)
       val transformedFuture: Future[Int] = future.map(_ + 100)
 
-      check(transformedFuture.value.contains(Try(300)))
+      check(transformedFuture.value.contains(??))
     }
 
     exercise("Chain two futures summing two arriving values") {
@@ -352,7 +352,7 @@ def _03_standard_library(): Unit =
 
       val futureSum = future1.flatMap(value1 => future2.map(value2 => value1 + value2))
 
-      check(Await.result(futureSum, Duration.Inf) == 300)
+      check(Await.result(futureSum, Duration.Inf) == ??)
     }
 
     exercise("Chain futures and promises") {
@@ -368,7 +368,7 @@ def _03_standard_library(): Unit =
           b <- future2
         } yield a + b
 
-      future3.foreach(value => check(value == 300))
+      future3.foreach(value => check(value == ??))
 
       check(future3.isCompleted == ??)
 

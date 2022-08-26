@@ -55,9 +55,6 @@ def _05_recursion(): Unit = {
       check(list == ??)
     }
 
-    exercise("") {
-      check(true)
-    }
   }
 
   section("Tailrec") {
@@ -206,7 +203,7 @@ def _05_recursion(): Unit = {
       check(l2 == ??)
     }
 
-    exercise("retry") {
+    exercise("retry", activated = false) {
 
       /**
        * A [[LazyList]] (aka Stream) is like a List, except that its
