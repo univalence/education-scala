@@ -4,9 +4,9 @@ import io.univalence.education.internal.exercise_tools.*
 import io.univalence.education.internal.implicits.*
 
 import scala.annotation.tailrec
-import scala.concurrent.{Await, ExecutionContext, ExecutionContextExecutor, Future}
+import scala.concurrent.*
 import scala.concurrent.duration.{Duration, FiniteDuration}
-import scala.util.{Random, Try}
+import scala.util.{Failure, Random, Success, Try}
 
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  * it is interesting to practice a bit with them!
  */
 @main
-def standard_library(): Unit =
+def _03_standard_library(): Unit =
   /**
    * List[A] is by far the most important data structure available in
    * the Scala standard library. It represents a list of elements. It is
@@ -41,8 +41,8 @@ def standard_library(): Unit =
     exercise("Create a list containing a 1") {
       val list: List[Int] = List(1)
 
-      check(list.length == 1)
-      check(list.headOption.contains(1))
+      check(list.length == ??)
+      check(list.headOption == ??)
     }
 
     val numbers: List[Int] = List(1, 2, 3, 4, 5)
@@ -50,27 +50,27 @@ def standard_library(): Unit =
     exercise("Find the size of a list") {
       val numberOfNumbers: Int = numbers.length
 
-      check(numberOfNumbers == 5)
+      check(numberOfNumbers == ??)
     }
 
     exercise("Check if an element exists or not") {
       val contains3: Boolean = numbers.contains(3)
       val contains6: Boolean = numbers.contains(6)
 
-      check(contains3)
-      check(!contains6)
+      check(contains3 == ??)
+      check(contains6 == ??)
     }
 
     exercise("Append (at the end of the list) the number 6") {
       val numbersThen6: List[Int] = numbers :+ 6
 
-      check(numbersThen6 == List(1, 2, 3, 4, 5, 6))
+      check(numbersThen6 == ??)
     }
 
     exercise("Prepend (at the beginning of the list) the number 0") {
       val numbersAfter0: List[Int] = 0 +: numbers
 
-      check(numbersAfter0 == List(0, 1, 2, 3, 4, 5))
+      check(numbersAfter0 == ??)
     }
 
     /**
@@ -81,7 +81,7 @@ def standard_library(): Unit =
     exercise("Transform all elements of a list using `map`") {
       val numbersTimes2: List[Int] = numbers.map(_ * 2)
 
-      check(numbersTimes2 == List(2, 4, 6, 8, 10))
+      check(numbersTimes2 == ??)
     }
 
     /**
@@ -90,7 +90,7 @@ def standard_library(): Unit =
     exercise("Filter all odd elements of a list using `filter`") {
       val evenNumbers: List[Int] = numbers.filter(_ % 2 == 0)
 
-      check(evenNumbers == List(2, 4))
+      check(evenNumbers == ??)
     }
   }
 
@@ -127,15 +127,16 @@ def standard_library(): Unit =
    */
   section("Practicing with Option[A]") {
     exercise("Create an option with no value") {
-      val none: Option[Int] = None
+      val none: Option[Int] = ???
 
       check(none.isEmpty)
     }
 
     exercise("Create an option with a value of 10") {
-      val some: Option[Int] = Some(10)
+      val some: Option[Int] = ???
 
       check(some.isDefined)
+      check(some.contains(10))
     }
 
     /** Try to apply what you learn with list here. */
@@ -143,7 +144,7 @@ def standard_library(): Unit =
       val some: Option[Int]        = Some(10)
       val updatedSome: Option[Int] = some.map(_ + 10)
 
-      check(updatedSome.contains(20))
+      check(updatedSome == ??)
     }
 
     /**
@@ -157,7 +158,7 @@ def standard_library(): Unit =
       val maybeCredentials: Option[(String, String)] =
         maybeUsername.flatMap(username => maybePassword.map(password => (username, password)))
 
-      check(maybeCredentials.contains(("student@school.com", "I luv scala 123")))
+      check(maybeCredentials == ??)
     }
 
     /**
@@ -168,7 +169,7 @@ def standard_library(): Unit =
       val none: Option[Int] = None
       val value: Int        = none.getOrElse(10)
 
-      check(value == 10)
+      check(value == ??)
     }
 
     /**
@@ -177,7 +178,7 @@ def standard_library(): Unit =
      *   - A function if the Option contains a value
      *   - A default value
      */
-    exercise("Recover from a none value using a default value of 10 using fold") {
+    exercise("Recover from a none value with a default value of 10 using fold") {
       val none: Option[Int] = None
       val some: Option[Int] = Some(10)
 
@@ -193,8 +194,8 @@ def standard_library(): Unit =
       val none: Option[Int] = None
       val res: String =
         none match {
-          case Some(_) => "There is a value"
-          case None    => "There is no value"
+          case Some(_) => ???
+          case None    => ???
         }
 
       check(res == "There is no value")
@@ -221,16 +222,18 @@ def standard_library(): Unit =
    *     with the either.
    */
   section("Practicing with Either[A, E]") {
-    exercise("Create an option with the string error 'Wrong code'") {
-      val left: Either[String, Int] = Left("Wrong code")
 
-      check(left.swap.contains("Wrong code"))
-    }
-
-    exercise("Create an option with a value of 200") {
+    exercise("Create an either with a value of 200") {
       val right: Either[String, Int] = Right(200)
 
-      check(right.contains(200))
+      check(right == ??)
+    }
+
+    exercise("Create an either with the string error 'Wrong code'") {
+      val left: Either[String, Int] = Left("Wrong code")
+
+      check(left == ??)
+      check(left.swap == ??)
     }
 
     /** Try to apply what you learn with list here. */
@@ -238,7 +241,7 @@ def standard_library(): Unit =
       val either: Either[String, Int]        = Right(200)
       val updatedEither: Either[String, Int] = either.map(_ + 10)
 
-      check(updatedEither.contains(210))
+      check(updatedEither == ??)
     }
 
     /**
@@ -252,21 +255,38 @@ def standard_library(): Unit =
       val maybeCredentials: Either[String, (String, String)] =
         maybeUsername.flatMap(username => maybePassword.map(password => (username, password)))
 
-      check(maybeCredentials == Left("The password should contain symbols."))
+      check(maybeCredentials == ??)
     }
 
     exercise("Recover from an error value using a default value of 10") {
       val either: Either[String, Int] = Left("The value is missing")
       val value: Int                  = either.getOrElse(10)
 
-      check(value == 10)
+      check(value == ??)
     }
   }
 
   /**
-   * Futures is another famous typeclass. As the name suggest, it
+   * [[Future]] is another famous type. As the name suggest, it
    * describes a value that may arrive in the future. It is useful when
    * you communicate with an API that may send a value later on.
+   *
+   * You use [[Promise]] to create future. In this case, Promise acts
+   * like the producer interface that sends a value to the future, which
+   * acts like the consumer interface.
+   *
+   * {{{
+   *   import scala.concurrent.*
+   *
+   *   // create a promise
+   *   val promise: Promise[Int] = Promise
+   *
+   *   // get the future bound to the promise
+   *   val future = promise.future
+   *
+   *   // trigger the promise with a value
+   *   promise.succeed(42)
+   * }}}
    */
   section("Practicing with Future[A]") {
 
@@ -277,6 +297,24 @@ def standard_library(): Unit =
      * use a Future.
      */
     implicit val ec: ExecutionContextExecutor = ExecutionContext.global
+
+    exercise("Future and promise") {
+      // create a promise
+      val promise: Promise[Int] = Promise()
+
+      // get the future bound to the promise
+      val future: Future[Int] = promise.future
+
+      // add a task to the future once it will be completed
+      future.foreach(value => check(value == 42))
+
+      check(future.isCompleted == ??)
+
+      // trigger the promise with a value. This complete the bound future.
+      promise.success(42)
+
+      check(future.isCompleted == ??)
+    }
 
     // TODO: Since you will have to wait for this test, you should only activate it when you are doing it.
     exercise("Create a Future with a non immediate value.", activated = false) {
@@ -316,30 +354,89 @@ def standard_library(): Unit =
 
       check(Await.result(futureSum, Duration.Inf) == 300)
     }
+
+    exercise("Chain futures and promises") {
+      val promise1: Promise[Int] = Promise()
+      val future1                = promise1.future
+
+      val promise2: Promise[Int] = Promise()
+      val future2                = promise2.future
+
+      val future3: Future[Int] =
+        for {
+          a <- future1
+          b <- future2
+        } yield a + b
+
+      future3.foreach(value => check(value == 300))
+
+      check(future3.isCompleted == ??)
+
+      promise1.success(100)
+
+      check(future3.isCompleted == ??)
+
+      promise2.success(200)
+
+      check(future3.isCompleted == ??)
+    }
+
+    exercise("Chain even more futures (and more promises)...") {
+      val promises: List[Promise[Int]]     = List.fill(5)(Promise[Int]())
+      val listOfFutures: List[Future[Int]] = promises.map(_.future)
+
+      /**
+       * sequence is an operation that convert a composition of generic
+       * types into is inverse composition.
+       *
+       * For example, `F[G[A]]` with sequence becomes `G[F[A]]`.
+       *
+       * So, `Future.sequence` con convert `List[Future[A]]` into a
+       * `Future[List[A]`, thus synchronising in one operation all the
+       * futures inside the list. Indeed, the result has completed when
+       * all the futures of initial list have completed.
+       */
+      val futureOfList: Future[List[Int]] = Future.sequence(listOfFutures)
+
+      futureOfList.foreach(list => check(list.sum == ??))
+
+      // zipWithIndex associates to each item of a list its item.
+      promises.zipWithIndex.map { case (p, i) =>
+        p.success(i + 1)
+      }
+
+      // this helps to let futureOfList completed
+      Thread.sleep(100)
+
+      check(futureOfList.isCompleted == ??)
+    }
   }
 
   /**
-   * You maybe noticed that the four data structures has many
+   * You maybe noticed that the four data structures seen above
+   * ([[List]], [[Option]], [[Either]], [[Future]]) have many
    * similarities. The Scala library is built with this constraint in
    * mind.
    *
-   * Therefore, in category theory, these data structures are all called
-   * Monad. The word might be scary, it just design data structures that
-   * contains:
+   * Therefore, in category theory (a general theory about mathematical
+   * structures), these data structures are all called ''monads''. The
+   * word might be scary, but it is just about data structures that
+   * might contains:
    *   - the `map` function that allows to transform the content of the
-   *     data structure
-   *   - the `flatMap` function that allows to chain two data structures
-   *   - the `pure` or `apply` function that allows to wrap a value into
-   *     one of the data structure
+   *     data structure.
+   *   - the `flatMap` function that allows to chain operations on those
+   *     data structures.
+   *   - the `pure`, `unit`, `point` or `apply` function that allows to
+   *     wrap a value into one of the data structure.
    *
-   * We already used these three functions, we will see them in details
+   * We already used these three functions. We will see them in details
    * here.
    *
-   * What it is important here is that using Monads, we don't think
-   * about the implementation behind the Monad. We don't need to know if
-   * an optional value is present or not or if a future value is arrived
-   * or not. All we have to do is to provide the function to apply in
-   * case of success.
+   * What it is important here is that using monads, we do not need to
+   * think about the implementation behind the monad. We do not need to
+   * know if an optional value is present or not or if a future value is
+   * arrived or not. All we have to do is to provide the function to
+   * apply in case of success.
    */
   section("Similarities and monads") {
     implicit val ec: ExecutionContextExecutor = ExecutionContext.global
@@ -364,10 +461,10 @@ def standard_library(): Unit =
       // For future, wrapping a value means that the value may arrive asynchronously
       val futureContainingTheValue: Future[Int] = Future(10)
 
-      check(listContainingTheValue.contains(10))
-      check(optionContainingTheValue.contains(10))
-      check(eitherContainingTheValue.contains(10))
-      check(futureContainingTheValue.value.contains(Try(10)))
+      check(listContainingTheValue.contains(??))
+      check(optionContainingTheValue.contains(??))
+      check(eitherContainingTheValue.contains(??))
+      check(futureContainingTheValue.value.contains(Try(??)))
     }
 
     /**
@@ -400,19 +497,19 @@ def standard_library(): Unit =
 
       // Applying the function f to a List of Int will apply this function to every element of the List.
       val listContainingTheValueApplyingF: List[Int] = listContainingTheValue.map(f)
-      check(listContainingTheValueApplyingF.contains(20))
+      check(listContainingTheValueApplyingF.contains(??))
 
       // Applying the function f to an Option will apply the function to the value if it exists or will be ignored if none.
       val optionContainingTheValueApplyingF: Option[Int] = optionContainingTheValue.map(f)
-      check(optionContainingTheValueApplyingF.contains(20))
+      check(optionContainingTheValueApplyingF.contains(??))
 
       // Applying the function f to an Either will apply the function to the value if it exists or will be ignored if it is an error.
       val eitherContainingTheValueApplyingF: Either[Nothing, Int] = eitherContainingTheValue.map(f)
-      check(eitherContainingTheValueApplyingF.contains(20))
+      check(eitherContainingTheValueApplyingF.contains(??))
 
       // Applying the function f to a Future will apply the function when the value arrive.
       val futureContainingTheValueApplyingF: Future[Int] = futureContainingTheValue.map(f)
-      check(futureContainingTheValueApplyingF.value.contains(Try(20)))
+      check(futureContainingTheValueApplyingF.value.contains(Try(??)))
     }
 
     exercise("Train to use the `flatMap` summing the content of two monad") {
@@ -433,28 +530,28 @@ def standard_library(): Unit =
         listContainingTheValue.flatMap(theValue =>
           listContainingAnotherValue.map(anotherValue => theValue + anotherValue)
         )
-      check(listSum == List(30))
+      check(listSum == List(??))
 
       // Sum the content of the Options
       val optionSum: Option[Int] =
         optionContainingTheValue.flatMap(theValue =>
           optionContainingAnotherValue.map(anotherValue => theValue + anotherValue)
         )
-      check(optionSum == Option(30))
+      check(optionSum == Option(??))
 
       // Sum the content of the Eithers
       val eitherSum: Either[Nothing, Int] =
         eitherContainingTheValue.flatMap(theValue =>
           eitherContainingAnotherValue.map(anotherValue => theValue + anotherValue)
         )
-      check(eitherSum == Right(30))
+      check(eitherSum == Right(??))
 
       // Sum the content of the Future
       val futureSum: Future[Int] =
         futureContainingTheValue.flatMap(theValue =>
           futureContainingAnotherValue.map(anotherValue => theValue + anotherValue)
         )
-      check(Await.result(futureSum, Duration.Inf) == 30)
+      check(Await.result(futureSum, Duration.Inf) == ??)
     }
 
     /**
@@ -467,7 +564,7 @@ def standard_library(): Unit =
       val words   = List("scala", "is", "great")
       val letters = words.flatMap(_.toUpperCase)
 
-      check(letters == List('S', 'C', 'A', 'L', 'A', 'I', 'S', 'G', 'R', 'E', 'A', 'T'))
+      check(letters == ??)
     }
 
     /**
@@ -504,62 +601,12 @@ def standard_library(): Unit =
       val optionContainingAnotherValue: Option[Int] = Option(20)
 
       val optionSum: Option[Int] =
-        optionContainingTheValue.flatMap(theValue =>
-          optionContainingAnotherValue.map(anotherValue => theValue + anotherValue)
-        )
-
-      val optionSum2: Option[Int] =
         for {
           theValue     <- optionContainingTheValue
           anotherValue <- optionContainingAnotherValue
         } yield theValue + anotherValue
 
-      check(optionSum == optionSum2)
+      check(optionSum == ??)
     }
 
-    /**
-     * Monad is an abstraction that everybody can use. Let's try to
-     * implement the simplest Monad only wrapping a value and allowing
-     * us to manipulate it.
-     */
-    // TODO: @françois je crois que ce dernier ne marche pas à cause des macros
-    // exercise("Create you own Monad") {
-    //  case class Box[+A](a: A) {
-    //    def map[B](f: A => B): Box[B]          = Box(f(a))
-    //    def flatMap[B](f: A => Box[B]): Box[B] = f(a)
-    //  }
-//
-    //  val boxTheValue: Box[Int]     = Box(10)
-    //  val boxAnotherValue: Box[Int] = Box(20)
-//
-    //  val boxSum =
-    //    for {
-    //      theValue     <- boxTheValue
-    //      anotherValue <- boxAnotherValue
-    //    } yield theValue + anotherValue
-//
-    //  check(boxSum == Box(30))
-    // }
-
-    section("Type as documentation") {
-
-      /**
-       * Something very interesting with pure and strong typed program
-       * is the fact that a function signature by itself can tell you
-       * the purpose of the function. Generally in Scala, you don't need
-       * docstring to explain what is the nature of an argument or what
-       * it needs to work.
-       *
-       * It makes the standard library very accessible for developers.
-       */
-      exercise("Implement the function fold of an Option without checking the standard library") {
-        def fold[A](option: Option[A])(default: A)(f: A => A): A =
-          option match {
-            case Some(value) => f(value)
-            case None        => default
-          }
-
-        check(Some(10).fold(20)(_ + 20) == fold(Some(10))(20)(_ + 20))
-      }
-    }
   }
