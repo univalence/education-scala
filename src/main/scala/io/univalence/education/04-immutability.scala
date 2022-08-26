@@ -31,7 +31,7 @@ import java.time.LocalDate
  *     garbage collector, this is not an issue for us).
  */
 @main
-def immutability(): Unit =
+def _04_immutability(): Unit =
   section("The basis of immutability") {
 
     /**
@@ -78,8 +78,8 @@ def immutability(): Unit =
     mutable2.add(10)
     mutable2.add(20)
 
-    check(mutable1.int == 40)
-    check(mutable2.int == 40)
+    check(mutable1.int == ??)
+    check(mutable2.int == ??)
 
     /**
      * We add the keyword `case` here. A case class is a class with
@@ -98,8 +98,8 @@ def immutability(): Unit =
         .add(10)
         .add(20)
 
-    check(immutable1 == Immutable(10))
-    check(immutable2 == Immutable(40))
+    check(immutable1.int == ??)
+    check(immutable2.int == ??)
   }
 
   /**
@@ -145,7 +145,7 @@ def immutability(): Unit =
         //   phone,
         //   job
         // )
-
+        // ...same as...
         copy(age = age + 1)
 
       /** Use copy to apply a new job to the person. */
@@ -155,10 +155,13 @@ def immutability(): Unit =
     val fiona = Person("Fiona", "Kerhs", 24, 183, LocalDate.of(1997, 12, 24), "+33632132145", Some("Data Engineer"))
 
     val grownUpFiona = fiona.increaseAge
-    check(grownUpFiona.age == fiona.age + 1)
+
+    // FIXME
+    check(grownUpFiona.age == fiona.age)
 
     val promotedFiona = fiona.changeJob("Tech lead")
-    check(promotedFiona.job.contains("Tech lead"))
+
+    check(promotedFiona.job == ??)
   }
 
   /**
@@ -256,6 +259,7 @@ def immutability(): Unit =
           case Nil          => default
         }
 
+      check(immutableFoldLeft(list)(0)(_ + _) == ??)
       check(list.foldLeft(0)(_ + _) == immutableFoldLeft(list)(0)(_ + _))
     }
   }
