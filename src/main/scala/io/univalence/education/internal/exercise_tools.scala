@@ -126,10 +126,14 @@ object exercise_tools {
           throw PartException(s"$title > $l", c)
         case e: Exception =>
           throw PartException(title, e)
-        case _: NotImplementedError =>
-          println(("\t" * activatedContexts.size) + s">>> ${Console.MAGENTA}TODO${Console.RESET}")
+        case e: NotImplementedError =>
+          val trace = e.getStackTrace.apply(1)
+          val filename = trace.getFileName
+          val line = trace.getLineNumber
+          println(("\t" * activatedContexts.size) + s">>> ${Console.CYAN}TODO an implementation is missing.${Console.RESET} ($filename:$line)")
       } finally activatedContexts = activatedContexts.init
     } else {
+
       part((activatedContexts.map(_.title) :+ s"$title ${Console.RED}(TO ACTIVATE)").mkString(" > "))
     }
 
@@ -170,7 +174,7 @@ object exercise_tools {
         case CheckResult.Failure(context) =>
           s"${Console.YELLOW}${result.expression} FAILED (${context.fileContext.path}:${context.fileContext.line})${Console.RESET}"
         case CheckResult.Todo(context) =>
-          s"${Console.CYAN}TODO${Console.RESET}"
+          s"${Console.CYAN}TODO missing implementation detected while calling${Console.RESET} ${result.expression} (${context.fileContext.path}:${context.fileContext.line})"
         case CheckResult.Error(context, e) =>
           s"${Console.RED}${result.expression} ERROR (${context.fileContext.path}:${context.fileContext.line}: ${e.getClass.getCanonicalName}: ${e.getMessage})${Console.RESET}"
       }
