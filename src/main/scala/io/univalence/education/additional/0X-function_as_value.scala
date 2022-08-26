@@ -1,4 +1,4 @@
-package io.univalence.education
+package io.univalence.education.additional
 
 import io.univalence.education.internal.exercise_tools.*
 
