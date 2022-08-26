@@ -28,7 +28,7 @@ import io.univalence.education.internal.exercise_tools.*
  */
 
 @main
-def _0x_generic_types(): Unit = {
+def _07_generic_types(): Unit = {
 
   /**
    * A box is just a generic container for exactly one value.

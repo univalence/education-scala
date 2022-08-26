@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 
 /** =Algebraic Data Type (ADT)= */
 @main
-def adt(): Unit =
+def _06_adt(): Unit =
   section("ADT") {
 
     /**
