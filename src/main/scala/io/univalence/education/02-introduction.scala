@@ -8,7 +8,7 @@ import scala.collection.SortedSet
 import scala.util.{Failure, Success, Try}
 
 @main
-def _00_introduction(): Unit = {
+def _02_introduction(): Unit = {
 
   /**
    * =Variables=
@@ -185,18 +185,18 @@ def _00_introduction(): Unit = {
      * programming in general).
      */
 
-    exercise("Create some basic lists", activated = false) {
+    exercise("Create some basic lists") {
 
       /**
        * Lists are used when in need of an ordered collection. Scala
        * lists are linked lists.
        */
-      val l1: List[Int] = List(???)
+      val l1: List[Int] = ???
 
       check(l1 == 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
     }
 
-    exercise("Mutate list", activated = false) {
+    exercise("Mutate list") {
 
       /** ... But remember: Scala list are immutable! */
 
@@ -207,7 +207,7 @@ def _00_introduction(): Unit = {
       check(l2 == List(42, 43))
     }
 
-    exercise("other useful collections", activated = false) {
+    exercise("other useful collections") {
 
       /**
        * Seq is like list and should be used as a general purpose
@@ -219,8 +219,8 @@ def _00_introduction(): Unit = {
        * Set should be used when you want to remove duplicated items.
        * But those items are not indexed and are not ordered.
        */
-      // todo : transform seqWithDuplicates into a Set
-      val set: Set[Int] = seqWithDuplicates.toSet
+      // TODO transform seqWithDuplicates into a Set
+      val set: Set[Int] = ???
 
       check(seqWithDuplicates.size > set.size)
 
@@ -298,14 +298,14 @@ def _00_introduction(): Unit = {
       check(incrementList(List(42, 24)) == ??)
     }
 
-    exercise("Function with a parameter", activated = false) {
+    exercise("Function with a parameter") {
       // TODO Create your own function
       val greeting: String => String = ???
 
       check(greeting("general Kenobi") == "Hello there, general Kenobi")
     }
 
-    exercise("function with default parameters", activated = true) {
+    exercise("function with default parameters") {
 
       /**
        * You can declare default parameters in Scala function simply by
@@ -479,7 +479,7 @@ def _00_introduction(): Unit = {
       check(condition == ??)
     }
 
-    exercise("If else as a value", activated = false) {
+    exercise("If else as a value") {
       // todo : use an if statement inside a string interpolation
       // reminder: string interpolation -> s"hello ${someVal}"
 
@@ -505,7 +505,7 @@ def _00_introduction(): Unit = {
      *   - they can be used in pattern matching.
      */
 
-    exercise("create a case class and an instance", activated = false) {
+    exercise("create a case class and an instance") {
       case class Pokemon(name: String, id: Int)
 
       val bulbasaur = Pokemon("Bulbasaur", 1)
@@ -535,7 +535,7 @@ def _00_introduction(): Unit = {
 
     }
 
-    exercise("create your own case class", activated = false) {
+    exercise("create your own case class") {
 
       /**
        * TODO create a case class Student, its attributes will be:
@@ -640,7 +640,7 @@ def _00_introduction(): Unit = {
   }
 
   section("PART 7 - SBT") {
-    exercise("add sbt dep", activated = false) {
+    exercise("add sbt dep") {
 
       /**
        * Chances are that you'll need some libraries at some point.
@@ -666,7 +666,7 @@ def _00_introduction(): Unit = {
   }
 
   section("PART 8 - enums") {
-    exercise("list all possibility of the solar system", activated = true) {
+    exercise("list all possibility of the solar system") {
 
       /**
        * Scala like many other languages allows you to write enums.
@@ -700,7 +700,7 @@ def _00_introduction(): Unit = {
 
     }
 
-    exercise("parameterized enums", activated = true) {
+    exercise("parameterized enums") {
 
       /** Scala 3 enums can come with parameters */
 
@@ -711,7 +711,7 @@ def _00_introduction(): Unit = {
       end ParamColor
 
       val red = ParamColor.Red
-      
+
       check(red.rgb == ??)
     }
 
@@ -771,7 +771,7 @@ def _00_introduction(): Unit = {
       check(letEmIn(42) == ??)
     }
 
-    exercise("Type matching", activated = true) {
+    exercise("Type matching") {
 
       /**
        * So, we can use pattern matching to check the type of an
@@ -807,7 +807,7 @@ def _00_introduction(): Unit = {
         check(sum(List(1, 2, 3, 4)) == ??)
       }
 
-      exercise("Length of list", activated = false) {
+      exercise("Length of list") {
         def length[A](l: List[A]): Int = ???
 
         check(length(List.empty[String]) == 0)
@@ -815,9 +815,9 @@ def _00_introduction(): Unit = {
         check(length(List(List.empty[Double])) == 1)
       }
 
-      exercise("Sum of a list (tail recursive)", activated = false) {
+      exercise("Sum of a list (tail recursive)") {
         // TODO uncomment the line below
-        // @tailrec 
+        // @tailrec
         def sum(l: List[Int]): Int = ???
 
         check(sum(List.empty) == 0)
@@ -826,5 +826,5 @@ def _00_introduction(): Unit = {
       }
     }
   }
-  
+
 }
