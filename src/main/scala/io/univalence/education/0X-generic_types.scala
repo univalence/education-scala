@@ -61,7 +61,7 @@ def _0x_generic_types(): Unit = {
 
       /**
        * The `flatMap` operation is almost similar to `map`, except that
-       * it can be used to chain operation using the value inside boxes.
+       * it can be used to chain operations using the value inside boxes.
        */
       extension [A](box: Box[A]) def flatMap[B](f: A => Box[B]): Box[B] = ???
 
