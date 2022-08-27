@@ -127,13 +127,13 @@ def _03_standard_library(): Unit =
    */
   section("Practicing with Option[A]") {
     exercise("Create an option with no value") {
-      val none: Option[Int] = ???
+      val none: Option[Int] = |>?
 
       check(none.isEmpty)
     }
 
     exercise("Create an option with a value of 10") {
-      val some: Option[Int] = ???
+      val some: Option[Int] = |>?
 
       check(some.isDefined)
       check(some.contains(10))
@@ -194,8 +194,8 @@ def _03_standard_library(): Unit =
       val none: Option[Int] = None
       val res: String =
         none match {
-          case Some(_) => ???
-          case None    => ???
+          case Some(_) => |>?
+          case None    => |>?
         }
 
       check(res == "There is no value")

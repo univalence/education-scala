@@ -15,7 +15,7 @@ def _02_introduction(): Unit = {
    * Scala proposes 3 kinds of variable declaration. And there is one
    * more that can be assimilated to a variable declaration.
    *
-   * NOTE: now on, every time you see `??`, `???`, or a `TODO`, it is a
+   * NOTE: now on, every time you see `??`, `|>?`, or a `TODO`, it is a
    * placeholder for you to put your answer. Same if a test fails.
    */
   section("PART 1 - Variables") {
@@ -191,7 +191,7 @@ def _02_introduction(): Unit = {
        * Lists are used when in need of an ordered collection. Scala
        * lists are linked lists.
        */
-      val l1: List[Int] = ???
+      val l1: List[Int] = |>?
 
       check(l1 == 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
     }
@@ -201,7 +201,7 @@ def _02_introduction(): Unit = {
       /** ... But remember: Scala list are immutable! */
 
       val l1 = List(42)
-      val l2 = ???
+      val l2 = |>?
 
       check(l1 == List(42))
       check(l2 == List(42, 43))
@@ -220,7 +220,7 @@ def _02_introduction(): Unit = {
        * But those items are not indexed and are not ordered.
        */
       // TODO transform seqWithDuplicates into a Set
-      val set: Set[Int] = ???
+      val set: Set[Int] = |>?
 
       check(seqWithDuplicates.size > set.size)
 
@@ -300,7 +300,7 @@ def _02_introduction(): Unit = {
 
     exercise("Function with a parameter") {
       // TODO Create your own function
-      val greeting: String => String = ???
+      val greeting: String => String = |>?
 
       check(greeting("general Kenobi") == "Hello there, general Kenobi")
     }
@@ -485,7 +485,7 @@ def _02_introduction(): Unit = {
 
       val x: Int      = 42
       val condition   = if (x % 2 == 0) "even" else "odd"
-      val str: String = s"x is an ${???} number"
+      val str: String = s"x is an ${??} number"
 
       check(str == ??)
     }
@@ -511,7 +511,7 @@ def _02_introduction(): Unit = {
       val bulbasaur = Pokemon("Bulbasaur", 1)
 
       /** TODO create a new Pokemon named ditto with an id of 132. */
-      val ditto: Pokemon = ???
+      val ditto: Pokemon = |>?
 
       /**
        * Ditto is a pokemon with a special attack called `Transform`
@@ -526,7 +526,7 @@ def _02_introduction(): Unit = {
 
       // TODO Let's finish the transformation by giving ditto bulbasaur's id
 
-      val fullyTransformedDitto = ???
+      val fullyTransformedDitto = |>?
 
       // the following test should pass, as case classes are compared by value.
       check(fullyTransformedDitto == bulbasaur)
@@ -545,11 +545,11 @@ def _02_introduction(): Unit = {
        *     `true`
        */
 
-      ???
+      |>?
 
       // TODO create an instance of Student in a way that passes the test
 
-      ???
+      |>?
 
       // TODO uncomment those lines
       // val student = Student("jack", List(1,2,3))
@@ -677,7 +677,7 @@ def _02_introduction(): Unit = {
         case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
 
       // TODO list all possible planets of the solar system in a Set
-      val enumValues: Set[SolarSystemPlanet] = ???
+      val enumValues: Set[SolarSystemPlanet] = |>?
 
       check(enumValues.size == 9)
 
@@ -808,7 +808,7 @@ def _02_introduction(): Unit = {
       }
 
       exercise("Length of list") {
-        def length[A](l: List[A]): Int = ???
+        def length[A](l: List[A]): Int = |>?
 
         check(length(List.empty[String]) == 0)
         check(length(List(10, 20, 40)) == 3)
@@ -818,7 +818,7 @@ def _02_introduction(): Unit = {
       exercise("Sum of a list (tail recursive)") {
         // TODO uncomment the line below
         // @tailrec
-        def sum(l: List[Int]): Int = ???
+        def sum(l: List[Int]): Int = |>?
 
         check(sum(List.empty) == 0)
         check(sum(List(2)) == 2)

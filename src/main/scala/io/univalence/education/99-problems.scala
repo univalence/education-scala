@@ -12,13 +12,13 @@ import io.univalence.education.internal.exercise_tools.*
 @main
 def _99_problems(): Unit = {
   exercise("salary increase") {
-    def increase(salaries: List[Double], rate: Double): List[Double] = ???
+    def increase(salaries: List[Double], rate: Double): List[Double] = |>?
 
     check(increase(List(1000.0, 2000.0, 3500.0), 0.02) == List(1020.0, 2040.0, 3570.0))
   }
 
   exercise("average") {
-    def average(values: Iterator[Double]): ???? = ???
+    def average(values: Iterator[Double]): !? = |>?
 
     check(average(Iterator.empty) == ??)
     check(average(Iterator(1.0)) == ??)
@@ -26,7 +26,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("recursive factorial") {
-    def factorial(n: Int): Int = ???
+    def factorial(n: Int): Int = |>?
 
     check(factorial(0) == 1)
     check(factorial(1) == 1)
@@ -45,7 +45,7 @@ def _99_problems(): Unit = {
      * @param n
      *   n should be > 0
      */
-    def fibonacci(n: Int): Int = ???
+    def fibonacci(n: Int): Int = |>?
 
     check(fibonacci(0) == 1)
     check(fibonacci(1) == 1)
@@ -56,7 +56,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("word count") {
-    def wordCount(test: String): Map[String, Int] = ???
+    def wordCount(test: String): Map[String, Int] = |>?
 
     check(wordCount("") == Map.empty)
     check(wordCount("ab") == Map("ab" -> 1))
@@ -66,7 +66,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("anagram") {
-    def isPalindrome(word: String): Boolean = ???
+    def isPalindrome(word: String): Boolean = |>?
 
     check(isPalindrome("") == true)
     check(isPalindrome("a") == true)
@@ -86,7 +86,7 @@ def _99_problems(): Unit = {
   import Tree.*
 
   exercise("size of a tree") {
-    def size[A](tree: Tree[A]): Int = ???
+    def size[A](tree: Tree[A]): Int = |>?
 
     check(size(Leaf) == 0)
     check(size(simpleNode(1)) == 1)
@@ -95,7 +95,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("size of the longuest path of a tree") {
-    def longuestPath[A](tree: Tree[A]): Int = ???
+    def longuestPath[A](tree: Tree[A]): Int = |>?
 
     check(longuestPath(Leaf) == 0)
     check(longuestPath(simpleNode(1)) == 1)
@@ -105,7 +105,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("make string, depth first approach - v1") {
-    def mkString[A](tree: Tree[A], separator: String): String = ???
+    def mkString[A](tree: Tree[A], separator: String): String = |>?
 
     check(mkString(Leaf, ", ") == "")
     check(mkString(simpleNode("a"), ", ") == "a")
@@ -119,7 +119,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("make string, depth first approach - v2") {
-    def mkString[A](tree: Tree[A], separator: String): String = ???
+    def mkString[A](tree: Tree[A], separator: String): String = |>?
 
     check(mkString(Leaf, ", ") == "")
     check(mkString(simpleNode("a"), ", ") == "a")
@@ -133,7 +133,7 @@ def _99_problems(): Unit = {
   }
 
   exercise("make string, depth first approach - v3") {
-    def mkString[A](tree: Tree[A], separator: String): String = ???
+    def mkString[A](tree: Tree[A], separator: String): String = |>?
 
     check(mkString(Leaf, ", ") == "")
     check(mkString(simpleNode("a"), ", ") == "a")

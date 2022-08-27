@@ -20,27 +20,49 @@ import io.univalence.education.internal.exercise_tools.*
 
 @main
 def test2(): Unit = {
-  check(1 + 1 == 2)
-  check(1 + 1 == 3)
-
-  check {
-    val a = 1
-    val b = 2
-    a + b == 12
-  }
-
-  section("test 1") {
-    exercise("exercise 1", activated = true) {
-      check(1 + 1 == 11)
+  section("Introduction") {
+    exercise("This exercise succeeds") {
       check(1 + 1 == 2)
     }
 
-    exercise("exercise 2", activated = true) {
+    exercise("This exercise fails") {
+      check(1 + 1 == 3)
+    }
+
+    exercise("You have to solve ?? in this exercise by yourself") {
+      check {
+        val a = 1
+        val b = 2
+
+        a + b == ??
+      }
+    }
+
+    exercise("An exercice can have many checks") {
+      check(1 + 1 == 11)
+      check(1 + 1 == 2)
+    }
+  }
+
+  section("Special cases") {
+    exercise("This exercise has an exception") {
       check(throw new IllegalArgumentException("oops"))
     }
 
-    exercise("exercise 3", activated = false) {
-      ???
+    exercise("You have to implement a function when you see |>?") {
+      def f(n: Int): Int = |>?
+
+      check(f(12) == 34)
+    }
+
+    exercise("You have to find the type of a function when you see !?") {
+      def f(n: Int): !? = |>?
+
+      check(f(12) == ??)
+    }
+
+    exercise("exercise 5", activated = false) {
+      |>?
     }
   }
 }

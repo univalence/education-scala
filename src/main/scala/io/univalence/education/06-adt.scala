@@ -30,10 +30,10 @@ def _06_adt(): Unit =
 
     def eval(expression: Expression, variableValue: Double): Double =
       expression match
-        case Variable          => ???
-        case Constant(value)   => ???
-        case Add(left, right)  => ???
-        case Mult(left, right) => ???
+        case Variable          => |>?
+        case Constant(value)   => |>?
+        case Add(left, right)  => |>?
+        case Mult(left, right) => |>?
 
     exercise("Evaluate an expression") {
       check(eval(Variable, 3) == 3.0)
@@ -49,7 +49,7 @@ def _06_adt(): Unit =
      * This will serve as an heuristic in order to estimate the
      * complexity of an expression.
      */
-    def size(expression: Expression): Int = ???
+    def size(expression: Expression): Int = |>?
 
     exercise("Size of an expression") {
       check(size(Variable) == 1)
@@ -83,7 +83,7 @@ def _06_adt(): Unit =
        * happens.
        */
 
-      def simplify(expression: Expression): Expression = ???
+      def simplify(expression: Expression): Expression = |>?
 
       /**
        * Find the fixed point of a function.

@@ -58,9 +58,14 @@ object exercise_tools {
 
   private var activatedContexts: Seq[PartContext] = Seq.empty
 
+  /** value place holder */
   final inline def ?? : Any = Nothing
-  
-  type ???? = Nothing
+
+  /** function body place holder */
+  final inline def |>? : Nothing = throw new NotImplementedError
+
+  /** type place holder */
+  final type !? = Nothing
 
   /** Check a boolean expression and display the result. */
   inline def check(inline expression: Boolean): Unit = ${ checkImpl('expression) }
@@ -127,10 +132,12 @@ object exercise_tools {
         case e: Exception =>
           throw PartException(title, e)
         case e: NotImplementedError =>
-          val trace = e.getStackTrace.apply(1)
+          val trace    = e.getStackTrace.apply(1)
           val filename = trace.getFileName
-          val line = trace.getLineNumber
-          println(("\t" * activatedContexts.size) + s">>> ${Console.CYAN}TODO an implementation is missing.${Console.RESET} ($filename:$line)")
+          val line     = trace.getLineNumber
+          println(
+            ("\t" * activatedContexts.size) + s">>> ${Console.CYAN}TODO an implementation is missing.${Console.RESET} ($filename:$line)"
+          )
       } finally activatedContexts = activatedContexts.init
     } else {
 
