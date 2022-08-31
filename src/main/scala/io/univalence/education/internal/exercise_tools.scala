@@ -132,11 +132,11 @@ object exercise_tools {
         case e: Exception =>
           throw PartException(title, e)
         case e: NotImplementedError =>
-          val trace    = e.getStackTrace.apply(1)
+          val trace    = e.getStackTrace.toList.filter(_.getClassName.startsWith("io.univalence")).head
           val filename = trace.getFileName
           val line     = trace.getLineNumber
           println(
-            ("\t" * activatedContexts.size) + s">>> ${Console.CYAN}TODO an implementation is missing.${Console.RESET} ($filename:$line)"
+            indent + s">>> ${Console.CYAN}TODO an implementation is missing.${Console.RESET} ($filename:$line)"
           )
       } finally activatedContexts = activatedContexts.init
     } else {
@@ -144,6 +144,9 @@ object exercise_tools {
       part((activatedContexts.map(_.title) :+ s"$title ${Console.RED}(TO ACTIVATE)").mkString(" > "))
     }
 
+  
+  inline def indent: String = "\t" * activatedContexts.size
+  
   inline def section(label: String)(f: => Unit): Unit = exercise(label)(f)
 
   final case class PartException(label: String, cause: Throwable)
@@ -186,7 +189,7 @@ object exercise_tools {
           s"${Console.RED}${result.expression} ERROR (${context.fileContext.path}:${context.fileContext.line}: ${e.getClass.getCanonicalName}: ${e.getMessage})${Console.RESET}"
       }
 
-    println(("\t" * activatedContexts.size) + s">>> $resultDisplay")
+    println(indent + s">>> $resultDisplay")
   }
 
 }
