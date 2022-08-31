@@ -45,8 +45,13 @@ def _03_climate(): Unit = {
   (for (data <- loadData("data/climate/city_temperature.csv.gz", TemperatureRecord))
     yield {
       exercise("Check the date range") {
-        val minDate: LocalDate = data.map(_.date).min
-        val maxDate: LocalDate = data.map(_.date).max
+
+        /**
+         * With a combination of [[List.map]] and [[List.min]] or
+         * [[List.max]], you can get such range.
+         */
+        val minDate: LocalDate = |>?
+        val maxDate: LocalDate = |>?
 
         println(indent + s"Dataset date range: from $minDate to $maxDate")
 
@@ -56,14 +61,15 @@ def _03_climate(): Unit = {
 
       /**
        * The last year does not seem to be completed. In a view to avoid
-       * errors in computation, we will simply drop this last year.
+       * errors in computation, we will simply drop this last year. This
+       * can be done by using [[List.filter]] of [[List.filterNot]].
        *
        * TODO clean the dataset by removing the incomplete year.
        */
-      val temperatures: List[TemperatureRecord] = data.filterNot(_.date.getYear == 2020)
+      val temperatures: List[TemperatureRecord] = |>?
 
       exercise("Get the average world temperature") {
-        val average: Double = temperatures.map(_.celsius).average
+        val average: Double = |>?
 
         println(indent + s"Average world temperature: $average")
 
@@ -81,26 +87,22 @@ def _03_climate(): Unit = {
          *
          * TODO get the temperature records by year
          */
-        val temperaturesByYear: Map[Int, List[TemperatureRecord]] = temperatures.groupBy(_.date.getYear)
+        val temperaturesByYear: Map[Int, List[TemperatureRecord]] = |>?
 
         /**
          * By year, we want now the average temperature. You will need
          * to create a view to the Map with [[Map.view]], then to
          * transform only the values in Map with [[MapView.mapValues]].
          */
-        val tempAverageByYear: Map[Int, Double] =
-          temperaturesByYear.view.mapValues { t =>
-            val tv = t.map(_.celsius)
-            tv.sum / tv.size
-          }.toMap
+        val tempAverageByYear: Map[Int, Double] = |>?
 
         /**
          * Convert the Map into a List of pair year/average temperature.
          * Then sort ascending according to the year.
          */
-        val tempAverageSortedByYear: List[(Int, Double)] = tempAverageByYear.toList.sortBy(_._1)
+        val tempAverageSortedByYear: List[(Int, Double)] = |>?
 
-        println(s"Average worldwide temperature by year: $tempAverageSortedByYear")
+        println(indent + s"Average worldwide temperature by year: $tempAverageSortedByYear")
 
         /**
          * Now, we will compute the differences in terms of temperature
@@ -121,18 +123,17 @@ def _03_climate(): Unit = {
          * By using map operation, you will be able to compute the
          * difference in temperature between two successive years.
          */
-        val tempEvolutionByYear: List[(Int, Double)] =
-          tempAverageSortedByYear.zip(tempAverageSortedByYear.drop(1)).map { case ((_, t1), (y, t2)) => y -> (t2 - t1) }
+        val tempEvolutionByYear: List[(Int, Double)] = |>?
 
-        println(tempEvolutionByYear)
+        println(indent + s"Evolution of temperatures: $tempEvolutionByYear")
 
         /**
          * It is time to compute the average evolution in temperature
          * year after year.
          */
-        val averageTempEvolution: Double = tempEvolutionByYear.map(_._2).average
+        val averageTempEvolution: Double = |>?
 
-        println(averageTempEvolution)
+        println(indent + s"Average evolution of temperatures: $averageTempEvolution")
 
         check(averageTempEvolution == ??)
       }
