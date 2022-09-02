@@ -84,15 +84,15 @@ def _04_cogroup_join(): Unit =
         val venuesById: Map[VenueId, List[Venue]] = |>?
 
         // cogroup checkins and venues with the same venue ID
-        val checkinsAndVanues: Map[VenueId, (List[Checkin], List[Venue])] = cogroup(checkinsByVenue, venuesById)
+        val checkinsAndVenues: Map[VenueId, (List[Checkin], List[Venue])] = cogroup(checkinsByVenue, venuesById)
 
         // TODO remove from the result all entry that has no venue
-        val filteredCheckinsAndVanues: Map[VenueId, (List[Checkin], List[Venue])] = |>?
+        val filteredCheckinsAndVenues: Map[VenueId, (List[Checkin], List[Venue])] = |>?
 
         // TODO use VenueCheckins structure (see below) to count the checkins by venue
         val venuesWithCheckinCount: List[VenueCheckins] = |>?
 
-        // Descending sort occording to the checkin count and take the 5 first elements
+        // Descending sort according to the checkin count and take the 5 first elements
         val result: List[VenueCheckins] =
           venuesWithCheckinCount
             .sortBy(-_.checkinCount)
