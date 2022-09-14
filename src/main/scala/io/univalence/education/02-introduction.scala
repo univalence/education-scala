@@ -5,6 +5,7 @@ import io.univalence.education.internal.implicits.*
 
 import scala.annotation.tailrec
 import scala.collection.SortedSet
+import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 
 @main
@@ -52,10 +53,11 @@ def _02_introduction(): Unit = {
        */
       val b = 8
 
-      check(a + b == ??)
+      check(a + b == 50)
 
       // todo: create a value so that the test passes
-      check(?? == "hello")
+      val c = "hello"
+      check(c == "hello")
     }
 
     /**
@@ -75,7 +77,7 @@ def _02_introduction(): Unit = {
       a = 3
       a += 8
 
-      check(a == ??)
+      check(a == 11)
     }
 
     /**
@@ -86,7 +88,7 @@ def _02_introduction(): Unit = {
      * explicitly (especially public functions)
      */
     exercise("Type inference") {
-      val a = ??
+      val a = 1
 
       check(a.isInstanceOf[Int])
 
@@ -120,11 +122,11 @@ def _02_introduction(): Unit = {
 
       lazy val effect = { x += 1; 42 }
 
-      check(x == ??)
-      check(effect == ??)
-      check(x == ??)
-      check(effect == ??)
-      check(x == ??)
+      check(x == 0)
+      check(effect == { 1; 42 })
+      check(x == 1)
+      check(effect == { 2; 42 })
+      check(x == 1)
     }
 
     /**
@@ -146,11 +148,11 @@ def _02_introduction(): Unit = {
 
       def g = { x += 1; 42 }
 
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
+      check(x == 1)
+      check(g == { 1; 42 })
+      check(x == 2)
+      check(g == { 2; 42 })
+      check(x == 3)
     }
 
     /**
@@ -161,7 +163,7 @@ def _02_introduction(): Unit = {
       val br  = "ch"
       val ch  = "br"
       val str = s"Le ${br}as sur la ${ch}aise"
-      check(str == ??)
+      check(str == "Le chas sur la braise")
     }
 
   }
@@ -191,7 +193,7 @@ def _02_introduction(): Unit = {
        * Lists are used when in need of an ordered collection. Scala
        * lists are linked lists.
        */
-      val l1: List[Int] = |>?
+      val l1: List[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil
 
       check(l1 == 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
     }
@@ -200,8 +202,8 @@ def _02_introduction(): Unit = {
 
       /** ... But remember: Scala list are immutable! */
 
-      val l1 = List(42)
-      val l2 = |>?
+      val l1: List[Int] = List(42)
+      val l2            = l1 :+ 43
 
       check(l1 == List(42))
       check(l2 == List(42, 43))
@@ -220,7 +222,7 @@ def _02_introduction(): Unit = {
        * But those items are not indexed and are not ordered.
        */
       // TODO transform seqWithDuplicates into a Set
-      val set: Set[Int] = |>?
+      val set: Set[Int] = seqWithDuplicates.toSet
 
       check(seqWithDuplicates.size > set.size)
 
@@ -238,8 +240,8 @@ def _02_introduction(): Unit = {
       val sortedSet             = SortedSet.from(set)
       val map: Map[String, Int] = l.zip(sortedSet).toMap
 
-      check(sortedSet == ??)
-      check(map == ??)
+      check(sortedSet == Set(1, 2, 3))
+      check(map == Map("one" -> 1, "two" -> 2, "three" -> 3))
     }
 
     exercise("Common collection operations") {
@@ -249,9 +251,9 @@ def _02_introduction(): Unit = {
       val tail            = list.tail
       val exists: Boolean = list.exists(_ < 1)
 
-      check(head == ??)
-      check(tail == ??)
-      check(exists == ??)
+      check(head == 1)
+      check(tail == List(2, 3, 4, 5, 6))
+      check(exists == false)
     }
   }
 
@@ -274,16 +276,16 @@ def _02_introduction(): Unit = {
         def apply(n: Int): Int = n + 1
       }
 
-      check(plusOne(42) == ??)
-      check(addOne(42) == ??)
-      check(increment(42) == ??)
-      check(increase(42) == ??)
+      check(plusOne(42) == 43)
+      check(addOne(42) == 43)
+      check(increment(42) == 43)
+      check(increase(42) == 43)
 
       /**
        * Yes, `oneUp` also declares a kind of function, knowing that
        * `oneUp.apply(42)` can be reduced into `oneUp(42)`.
        */
-      check(oneUp(42) == ??)
+      check(oneUp(42) == 43)
 
       /**
        * You do not even have to declare the type of some anonymous
@@ -295,12 +297,12 @@ def _02_introduction(): Unit = {
 
       val incrementList = (list: List[Int]) => list.map(elt => elt + 1)
 
-      check(incrementList(List(42, 24)) == ??)
+      check(incrementList(List(42, 24)) == List(43, 25))
     }
 
     exercise("Function with a parameter") {
       // TODO Create your own function
-      val greeting: String => String = |>?
+      val greeting: String => String = greeting => s"Hello there,${greeting}"
 
       check(greeting("general Kenobi") == "Hello there, general Kenobi")
     }

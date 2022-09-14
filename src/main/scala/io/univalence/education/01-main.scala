@@ -15,8 +15,9 @@ def _01_main(): Unit = println("Hello world")
 /**
  * NOTE
  *
- * [[Unit]] is an almost equivalent type to `void` in Java and C/C++. The
- * sole difference is that [[Unit]] as just one associated value: `()`.
+ * [[Unit]] is an almost equivalent type to `void` in Java and C/C++.
+ * The sole difference is that [[Unit]] as just one associated value:
+ * `()`.
  */
 
 /**
@@ -39,18 +40,21 @@ def _01_run2(): Unit =
   // TODO use string interpolation to display Mary
   val name1 = "John"
   val name2 = "Mary"
-  println(s"Hello $name1 and [put second interpolation here]")
+  println(s"Hello $name1 and $name2")
 
 /** ==MULTILINE STRING== */
 @main
 def _01_run3(): Unit =
-/**
- * TODO copy/paste the text below in the string to display. Ensure
- * that the line breaks are respected.
- */
-/* Sister Suzie, brother John
- * Martin Luther, Phil and Don
- * Brother Michael, auntie Gin
- * Open the door and let 'em in
- */
-  println("""[paste here]""")
+  /**
+   * TODO copy/paste the text below in the string to display. Ensure
+   * that the line breaks are respected.
+   */
+  /* Sister Suzie, brother John
+   * Martin Luther, Phil and Don
+   * Brother Michael, auntie Gin
+   * Open the door and let 'em in
+   */
+  println("""|Sister Suzie, brother John
+             |Martin Luther, Phil and Don
+             |Brother Michael, auntie Gin
+             |Open the door and let 'em in""".stripMargin)
