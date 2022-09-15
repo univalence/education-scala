@@ -52,10 +52,11 @@ def _02_introduction(): Unit = {
        */
       val b = 8
 
-      check(a + b == ??)
+      check(a + b == 50)
 
       // todo: create a value so that the test passes
-      check(?? == "hello")
+      val test = "hello"
+      check(test == "hello")
     }
 
     /**
@@ -75,7 +76,7 @@ def _02_introduction(): Unit = {
       a = 3
       a += 8
 
-      check(a == ??)
+      check(a == 11)
     }
 
     /**
@@ -86,7 +87,7 @@ def _02_introduction(): Unit = {
      * explicitly (especially public functions)
      */
     exercise("Type inference") {
-      val a = ??
+      val a = 3
 
       check(a.isInstanceOf[Int])
 
@@ -120,11 +121,11 @@ def _02_introduction(): Unit = {
 
       lazy val effect = { x += 1; 42 }
 
-      check(x == ??)
-      check(effect == ??)
-      check(x == ??)
-      check(effect == ??)
-      check(x == ??)
+      check(x == 0)
+      check(effect == { 1; 42 })
+      check(x == 1)
+      check(effect == { 2; 42 })
+      check(x == 1)
     }
 
     /**
@@ -146,11 +147,11 @@ def _02_introduction(): Unit = {
 
       def g = { x += 1; 42 }
 
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
+      check(x == 1)
+      check(g == { 2; 42 })
+      check(x == 2)
+      check(g == { 3; 42 })
+      check(x == 3)
     }
 
     /**
@@ -161,7 +162,7 @@ def _02_introduction(): Unit = {
       val br  = "ch"
       val ch  = "br"
       val str = s"Le ${br}as sur la ${ch}aise"
-      check(str == ??)
+      check(str == "Le chas sur la braise")
     }
 
   }
@@ -191,7 +192,7 @@ def _02_introduction(): Unit = {
        * Lists are used when in need of an ordered collection. Scala
        * lists are linked lists.
        */
-      val l1: List[Int] = |>?
+      val l1: List[Int] = List(1, 2, 3, 4, 5, 6)
 
       check(l1 == 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: Nil)
     }
@@ -201,7 +202,7 @@ def _02_introduction(): Unit = {
       /** ... But remember: Scala list are immutable! */
 
       val l1 = List(42)
-      val l2 = |>?
+      val l2 = List(42, 43)
 
       check(l1 == List(42))
       check(l2 == List(42, 43))
@@ -220,7 +221,7 @@ def _02_introduction(): Unit = {
        * But those items are not indexed and are not ordered.
        */
       // TODO transform seqWithDuplicates into a Set
-      val set: Set[Int] = |>?
+      val set: Set[Int] = Set(2, 3, 1, 2, 3, 1)
 
       check(seqWithDuplicates.size > set.size)
 
@@ -238,8 +239,8 @@ def _02_introduction(): Unit = {
       val sortedSet             = SortedSet.from(set)
       val map: Map[String, Int] = l.zip(sortedSet).toMap
 
-      check(sortedSet == ??)
-      check(map == ??)
+      check(sortedSet == Set(1, 2, 3))
+      check(map == Map("one" -> 1, "two" -> 2, "three" -> 3))
     }
 
     exercise("Common collection operations") {
@@ -249,9 +250,9 @@ def _02_introduction(): Unit = {
       val tail            = list.tail
       val exists: Boolean = list.exists(_ < 1)
 
-      check(head == ??)
-      check(tail == ??)
-      check(exists == ??)
+      check(head == 1)
+      check(tail == List(2, 3, 4, 5, 6))
+      check(exists == false)
     }
   }
 
@@ -274,16 +275,16 @@ def _02_introduction(): Unit = {
         def apply(n: Int): Int = n + 1
       }
 
-      check(plusOne(42) == ??)
-      check(addOne(42) == ??)
-      check(increment(42) == ??)
-      check(increase(42) == ??)
+      check(plusOne(42) == 43)
+      check(addOne(42) == 43)
+      check(increment(42) == 43)
+      check(increase(42) == 43)
 
       /**
        * Yes, `oneUp` also declares a kind of function, knowing that
        * `oneUp.apply(42)` can be reduced into `oneUp(42)`.
        */
-      check(oneUp(42) == ??)
+      check(oneUp(42) == 43)
 
       /**
        * You do not even have to declare the type of some anonymous
@@ -295,12 +296,12 @@ def _02_introduction(): Unit = {
 
       val incrementList = (list: List[Int]) => list.map(elt => elt + 1)
 
-      check(incrementList(List(42, 24)) == ??)
+      check(incrementList(List(42, 24)) == List(43, 25))
     }
 
     exercise("Function with a parameter") {
       // TODO Create your own function
-      val greeting: String => String = |>?
+      val greeting: String => String = string => s"Hello there, $string"
 
       check(greeting("general Kenobi") == "Hello there, general Kenobi")
     }
@@ -316,14 +317,14 @@ def _02_introduction(): Unit = {
 
       def incrementBy(increment: Int, baseNumber: Int = 0) = baseNumber + increment
 
-      check(incrementBy(42) == ??)
-      check(incrementBy(42, 8) == ??)
-      check(incrementBy(baseNumber = 42, increment = 8) == ??)
+      check(incrementBy(42) == 42)
+      check(incrementBy(42, 8) == 50)
+      check(incrementBy(baseNumber = 42, increment = 8) == 50)
 
       // TODO modify the function greeting, so it returns "Hello world" when it has no parameter.
       val defaultParam                  = "world"
       def greeting(str: String): String = s"Hello $str"
-      check(?? == "Hello world")
+      check(gretting == "Hello world")
     }
 
     exercise("Curryfication") {
