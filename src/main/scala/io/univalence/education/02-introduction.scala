@@ -687,7 +687,7 @@ def _02_introduction(): Unit = {
        *     SolarSystemPlanet.valueOf("Jupiter")
        *   - values: returns every enum value in an array
        *   - ordinal: values of an enum are associated to a unique
-       *     integer. This unique int can be accessed using ordinal liek
+       *     integer. This unique int can be accessed using ordinal like
        *     so -> SolarSystemPlanet.Mercury.ordinal
        *   - fromOrdinal: retrieve enum value from ordinal ->
        *     SolarSystemPlanet.fromOrdinal(0)
