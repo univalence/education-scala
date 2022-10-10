@@ -679,7 +679,7 @@ def _02_introduction(): Unit = {
       // TODO list all possible planets of the solar system in a Set
       val enumValues: Set[SolarSystemPlanet] = |>?
 
-      check(enumValues.size == 9)
+      check(enumValues.size == 8)
 
       /**
        * Scala enums come with basic operations such as:
