@@ -42,6 +42,7 @@ def _03_standard_library(): Unit =
       val list: List[Int] = List(1)
 
       check(list.length == ??)
+      check(list.head == ??)
       check(list.headOption == ??)
     }
 
@@ -182,8 +183,8 @@ def _03_standard_library(): Unit =
       val none: Option[Int] = None
       val some: Option[Int] = Some(10)
 
-      check(none.getOrElse(10) == none.fold(10)(identity))
-      check(some.getOrElse(10) == some.fold(10)(identity))
+      check(none.getOrElse(10) == none.fold(??)(|>?))
+      check(some.getOrElse(10) == some.fold(??)(|>?))
     }
 
     /**
@@ -561,8 +562,8 @@ def _03_standard_library(): Unit =
      *     characters in uppercase.
      */
     exercise("Common use case to flatMap a list") {
-      val words   = List("scala", "is", "great")
-      val letters = words.flatMap(_.toUpperCase)
+      val words: List[String] = List("scala", "is", "great")
+      val letters: List[Char] = words.flatMap(_.toUpperCase)
 
       check(letters == ??)
     }

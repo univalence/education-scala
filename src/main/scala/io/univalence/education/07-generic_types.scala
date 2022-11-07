@@ -2,6 +2,8 @@ package io.univalence.education
 
 import io.univalence.education.internal.exercise_tools.*
 
+import scala.annotation.tailrec
+
 /**
  * =Generic type=
  *
@@ -191,7 +193,7 @@ def _07_generic_types(): Unit = {
       extension [A](l: MyList[A]) def foldLeft[B](init: B)(f: (B, A) => B): B = |>?
 
       check(MyList(1, 2, 3).foldLeft(0)(_ + _) == 6)
-      check(MyList("a", "b", "c").foldLeft(MyList.empty[String])((l, value) => Cell(value, l)) == MyList(3, 2, 1))
+      check(MyList("a", "b", "c").foldLeft(MyList.empty[String])((l, value) => Cell(value, l)) == MyList("c", "b", "a"))
     }
   }
 

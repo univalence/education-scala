@@ -118,7 +118,10 @@ def _02_introduction(): Unit = {
     exercise("Lazy val") {
       var x = 0
 
-      lazy val effect = { x += 1; 42 }
+      lazy val effect: Int = {
+        x += 1
+        42
+      }
 
       check(x == ??)
       check(effect == ??)
@@ -144,13 +147,16 @@ def _02_introduction(): Unit = {
     exercise("Parameterless function") {
       var x = 1
 
-      def g = { x += 1; 42 }
+      def g: Int = {
+        x += 1
+        42
+      }
 
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
-      check(g == ??)
-      check(x == ??)
+      check(x == 1)
+      check(g == 42)
+      check(x == 2)
+      check(g == 42)
+      check(x == 3)
     }
 
     /**
@@ -161,6 +167,7 @@ def _02_introduction(): Unit = {
       val br  = "ch"
       val ch  = "br"
       val str = s"Le ${br}as sur la ${ch}aise"
+
       check(str == ??)
     }
 
@@ -265,9 +272,9 @@ def _02_introduction(): Unit = {
        * The five declarations below represent the same function.
        */
 
-      def plusOne(n: Int) = n + 1
+      def plusOne(n: Int): Int = n + 1
 
-      val addOne                = (n: Int) => n + 1
+      val addOne: Int => Int    = (n: Int) => n + 1
       val increment: Int => Int = n => n + 1
       val increase: Int => Int  = _ + 1
       object oneUp {
@@ -284,6 +291,7 @@ def _02_introduction(): Unit = {
        * `oneUp.apply(42)` can be reduced into `oneUp(42)`.
        */
       check(oneUp(42) == ??)
+      check(oneUp.apply(42) == ??)
 
       /**
        * You do not even have to declare the type of some anonymous
@@ -293,7 +301,7 @@ def _02_introduction(): Unit = {
        * function inside `map`.
        */
 
-      val incrementList = (list: List[Int]) => list.map(elt => elt + 1)
+      val incrementList: List[Int] => List[Int] = (list: List[Int]) => list.map(elt => elt + 1)
 
       check(incrementList(List(42, 24)) == ??)
     }
@@ -323,6 +331,7 @@ def _02_introduction(): Unit = {
       // TODO modify the function greeting, so it returns "Hello world" when it has no parameter.
       val defaultParam                  = "world"
       def greeting(str: String): String = s"Hello $str"
+      
       check(?? == "Hello world")
     }
 
@@ -400,7 +409,7 @@ def _02_introduction(): Unit = {
       check(johnDoe.copy(firstName = "jane") == ??)
     }
 
-    exercise("Call-by=value & call-by-name") {
+    exercise("Call-by-value & call-by-name") {
 
       /**
        * Let us talk about two concepts named:
@@ -454,15 +463,25 @@ def _02_introduction(): Unit = {
           "nope"
 
       var x2 = 0
-      val messageWithAnEffect2 = {
-        x2 += 1
-        "hello"
-      }
 
-      check(double2(evaluate = false, messageWithAnEffect2) == ??)
-      check(x2 == ??)
+      check(
+        double2(
+          evaluate = false, {
+            x2 += 1
+            "hello"
+          }
+        ) == ??
+      )
+      check(x2 == 1)
 
-      check(double2(evaluate = true, messageWithAnEffect2) == ??)
+      check(
+        double2(
+          evaluate = true, {
+            x2 += 1
+            "hello"
+          }
+        ) == ??
+      )
       check(x2 == ??)
     }
 
@@ -548,8 +567,6 @@ def _02_introduction(): Unit = {
       |>?
 
       // TODO create an instance of Student in a way that passes the test
-
-      |>?
 
       // TODO uncomment those lines
       // val student = Student("jack", List(1,2,3))
@@ -693,6 +710,8 @@ def _02_introduction(): Unit = {
        *     SolarSystemPlanet.fromOrdinal(0)
        */
 
+      import SolarSystemPlanet.*
+
       check(SolarSystemPlanet.values == ??)
       check(SolarSystemPlanet.Earth.ordinal == ??)
       check(SolarSystemPlanet.fromOrdinal(0) == ??)
@@ -710,7 +729,7 @@ def _02_introduction(): Unit = {
         case Blue extends ParamColor(0x0000ff)
       end ParamColor
 
-      val red = ParamColor.Red
+      val red: ParamColor = ParamColor.Red
 
       check(red.rgb == ??)
     }
@@ -816,7 +835,7 @@ def _02_introduction(): Unit = {
       }
 
       exercise("Sum of a list (tail recursive)") {
-        // TODO uncomment the line below
+        // TODO uncomment the line below and ensure that there is no compilation error in the sum implementation
         // @tailrec
         def sum(l: List[Int]): Int = |>?
 
