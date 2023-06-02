@@ -152,11 +152,11 @@ def _02_introduction(): Unit = {
         42
       }
 
-      check(x == 1)
-      check(g == 42)
-      check(x == 2)
-      check(g == 42)
-      check(x == 3)
+      check(x == ??)
+      check(g == ??)
+      check(x == ??)
+      check(g == ??)
+      check(x == ??)
     }
 
     /**

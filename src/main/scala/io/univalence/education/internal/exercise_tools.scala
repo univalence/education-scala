@@ -30,6 +30,8 @@ object exercise_tools {
     case SUCCESS, FAILURE, ERROR, TODO
   }
 
+  val COLOR_GREY = "\u001b[38;5;8m"
+  
   private[internal] enum CheckResult {
     case Success(context: CheckContext)
     case Failure(context: CheckContext)
@@ -50,7 +52,6 @@ object exercise_tools {
         case Failure(_)  => CheckResultType.FAILURE
         case Error(_, _) => CheckResultType.ERROR
         case Todo(_)     => CheckResultType.TODO
-
       }
   }
 
@@ -90,7 +91,12 @@ object exercise_tools {
 
     val position   = term.pos
     val sourceCode = position.sourceCode.getOrElse("")
-    val exprBody   = Expr(sourceCode.replace("\n", "\n\t"))
+    val exprBody =
+      Expr(
+        sourceCode
+          .replace("\n", "\n\t")
+          .replaceFirst("(//[^\n]+)\n", COLOR_GREY + "$$1" + Console.RESET + "\n")
+      )
 
     '{
       val context = CheckContext($exprBody, $fileContext)
@@ -140,19 +146,32 @@ object exercise_tools {
           )
       } finally activatedContexts = activatedContexts.init
     } else {
-
       part((activatedContexts.map(_.title) :+ s"$title ${Console.RED}(TO ACTIVATE)").mkString(" > "))
     }
 
-  
   inline def indent: String = "\t" * activatedContexts.size
-  
+
   inline def section(label: String)(f: => Unit): Unit = exercise(label)(f)
 
   final case class PartException(label: String, cause: Throwable)
       extends RuntimeException(s"""Exception caught in part "$label"""", cause)
 
   inline def exercisePart(title: String): Unit = part((activatedContexts.map(_.title) :+ title).mkString(" > "))
+
+  inline def comment(inline content: String): Unit = ${ commentImpl('{ content }) }
+
+  private def commentImpl(content: Expr[String])(using Quotes): Expr[Unit] = {
+    import quotes.reflect.*
+
+    val fileContext = captureFileContext(content)
+    val term = content.asTerm.underlyingArgument
+
+    '{
+      println(
+        ("\t" * activatedContexts.size) + s"$COLOR_GREY# ${$content} ${Console.WHITE}(line:${$fileContext.line})${Console.RESET}"
+      )
+    }
+  }
 
   /** Display a part with a file name. */
   inline def part(inline title: String): Unit = ${ partImpl('title) }
