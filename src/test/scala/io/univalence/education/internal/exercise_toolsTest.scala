@@ -35,7 +35,7 @@ class exercise_toolsTest extends FunSuite {
   test("check should return error on exception") {
     val result = checkResultOf(throw new IllegalArgumentException("woops"))
 
-    val CheckResult.Error(_, exception) = result
+    val CheckResult.Error(_, exception) = result: @unchecked
 
     assertEquals(result.expression, "throw new IllegalArgumentException(\"woops\")")
     assert(exception.isInstanceOf[IllegalArgumentException], "exception should be of type IllegalArgumentException")
